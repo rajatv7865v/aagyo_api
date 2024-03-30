@@ -1,13 +1,44 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  FileTypeValidator,
+  HttpCode,
+  HttpStatus,
+  MaxFileSizeValidator,
+  ParseFilePipe,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from "@nestjs/common";
 import { ProductService } from "./product.service";
+import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { CreateProductDTO } from "./dto/create-product.dto";
+import { FileInterceptor } from "@nestjs/platform-express";
+import multer from "multer";
 
-@Controller("products")
+@ApiTags("Prodcts")
+@Controller("product")
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
+  @ApiOperation({ summary: "Add Product" })
   @Post("add")
   @HttpCode(HttpStatus.CREATED)
-  addProduct() {
-    return this.productService.addProduct();
+  @UseInterceptors(FileInterceptor("file"))
+  addProduct(
+    @Body() createProductDTO: CreateProductDTO,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 10000000 }),
+          new FileTypeValidator({
+            fileType: /(image\/jpeg|image\/png|application\/pdf)/,
+          }),
+        ],
+      })
+    )
+    file: Express.Multer.File
+  ) {
+    return this.productService.addProduct(createProductDTO, file);
   }
 }

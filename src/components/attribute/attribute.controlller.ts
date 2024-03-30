@@ -11,7 +11,9 @@ import {
 } from "@nestjs/common";
 import { AttributeService } from "./attribute.service";
 import { CreateAttributeDTO } from "./dto/create-attribute.dto";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags('Attributes')
 @Controller("attribute")
 export class AtrributeController {
   constructor(private readonly attributeService: AttributeService) {}

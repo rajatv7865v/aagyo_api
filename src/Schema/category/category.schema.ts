@@ -5,6 +5,9 @@ import { Date, Document } from "mongoose";
 export class Category {
   @Prop({ required: true })
   name: string;
+
+  @Prop({type:Object, required: true })
+  banner: object;
 }
 
 export type CategoryDocument = Category & Document;
