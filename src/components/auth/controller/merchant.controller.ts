@@ -87,7 +87,6 @@ export class MerchantController {
     )
     banner: Express.Multer.File
   ) {
-   
     return this.merchantService.registerStoreDetail(
       registerStoreDetailDTO,
       banner
@@ -109,11 +108,6 @@ export class MerchantController {
   }
 
   @Post("/register/documents")
-  @ApiConsumes("multipart/form-data")
-  @ApiBody({
-    description: "Upload image file",
-    type: "file",
-  })
   @UseInterceptors(AnyFilesInterceptor())
   @ApiOperation({ summary: "Register Merchant's Documents" })
   @HttpCode(HttpStatus.CREATED)
@@ -131,7 +125,6 @@ export class MerchantController {
     )
     files: Array<Express.Multer.File>
   ) {
-    
     return this.merchantService.registerDocuments(registerDocumentDTO, files);
   }
 }
