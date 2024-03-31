@@ -145,12 +145,12 @@ export class MerchantService extends CrudService {
       }
 
       const document = await this.documentModel.findOne({ merchant_id: id });
-      if (!bankDetail) {
+      if (!document) {
         return {
           data: document,
           STEP: 5,
           statusCode: 2,
-          status: "PENDING",
+          status: "SUCCESS",
           message: REGISTERACCOUNT,
         };
       }
@@ -202,7 +202,7 @@ export class MerchantService extends CrudService {
     try {
       const { id, address, category, city, country, storeName, state } =
         registerStoreDetailDTO;
-        const uploadFile = await this.s3Service.uploadFile(banner);
+      const uploadFile = await this.s3Service.uploadFile(banner);
       const result = await this.storeModel.create({
         merchant_id: new ObjectId(id),
         storeName,
@@ -293,12 +293,13 @@ export class MerchantService extends CrudService {
       const data = await this.s3Service.uploadMultipleFile(files);
       console.log(documents);
 
-      // const result = await this.documentModel.create({
-      //   merchant_id: new ObjectId(id),
-      //   document: {
-      //     documentName
-      //   }
-      // });
+      const result = await this.documentModel.create({
+        // merchant_id: new ObjectId(id),
+        // documents: {
+        //   documentName:,
+        //   documentImg:
+        // }
+      });
 
       console.log(files);
       return {
@@ -307,6 +308,47 @@ export class MerchantService extends CrudService {
       };
     } catch (err) {
       throw err;
+    }
+  }
+
+  async getStepById(id: ObjectId) {
+    try {
+      const store = await this.storeModel.findOne({ merchant_id: id });
+      if (!store) {
+        return {
+          STEP: 2,
+          statusCode: 2,
+          status: "PENDING",
+        };
+      }
+
+      if (!store?.slots?.length || !store?.isFullTimeOpen) {
+        return {
+          STEP: 3,
+          statusCode: 2,
+          status: "PENDING",
+        };
+      }
+
+      const bankDetail = await this.storeModel.findOne({ merchant_id: id });
+      if (!bankDetail) {
+        return {
+          STEP: 4,
+          statusCode: 2,
+          status: "PENDING",
+        };
+      }
+
+      const document = await this.documentModel.findOne({ merchant_id: id });
+      if (!document) {
+        return {
+          STEP: 5,
+          statusCode: 2,
+          status: "SUCCESS",
+        };
+      }
+    } catch (error) {
+      throw error;
     }
   }
 }

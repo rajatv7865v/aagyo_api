@@ -2,11 +2,13 @@ import {
   Body,
   Controller,
   FileTypeValidator,
+  Get,
   HttpCode,
   HttpStatus,
   MaxFileSizeValidator,
   Param,
   ParseFilePipe,
+  ParseIntPipe,
   Post,
   Query,
   UploadedFile,
@@ -126,5 +128,12 @@ export class MerchantController {
     files: Array<Express.Multer.File>
   ) {
     return this.merchantService.registerDocuments(registerDocumentDTO, files);
+  }
+
+  @ApiOperation({ summary: "Get current step by id" })
+  @HttpCode(HttpStatus.OK)
+  @Get("step/:id")
+  getStepById(@Param("id") id: any) {
+    return this.merchantService.getStepById(id);
   }
 }
