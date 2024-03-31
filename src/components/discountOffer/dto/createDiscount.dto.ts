@@ -79,5 +79,5 @@ export class CreateDiscountDTO {
   offerDesc: string;
 
   @IsOptional()
-  banner: File;
+  banner: object;
 }
