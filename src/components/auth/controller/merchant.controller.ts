@@ -79,12 +79,12 @@ export class MerchantController {
     @Body() registerStoreDetailDTO: RegisterStoreDetailDTO,
     @UploadedFile(
       new ParseFilePipe({
-        validators: [
-          new MaxFileSizeValidator({ maxSize: 100000000 }),
-          new FileTypeValidator({
-            fileType: /(image\/jpeg|image\/png|application\/pdf)/,
-          }),
-        ],
+        // validators: [
+        //   new MaxFileSizeValidator({ maxSize: 100000000 }),
+        //   new FileTypeValidator({
+        //     fileType: /(image\/jpeg|image\/png|application\/pdf)/,
+        //   }),
+        // ],
       })
     )
     banner: Express.Multer.File
