@@ -291,7 +291,9 @@ export class MerchantService extends CrudService {
     try {
       const { documents, id } = registerDocumentDTO;
       const data = await this.s3Service.uploadMultipleFile(files);
-      console.log(documents);
+      console.log(documents, "documents");
+      console.log(id, "id");
+      console.log(files, "files");
 
       const result = await this.documentModel.create({
         // merchant_id: new ObjectId(id),

@@ -117,12 +117,12 @@ export class MerchantController {
     @Body() registerDocumentDTO: RegisterDocumentDTO,
     @UploadedFiles(
       new ParseFilePipe({
-        validators: [
-          new MaxFileSizeValidator({ maxSize: 100000000 }),
-          new FileTypeValidator({
-            fileType: /(image\/jpeg|image\/png|application\/pdf)/,
-          }),
-        ],
+        // validators: [
+        //   new MaxFileSizeValidator({ maxSize: 100000000 }),
+        //   new FileTypeValidator({
+        //     fileType: /(image\/jpeg|image\/png|application\/pdf)/,
+        //   }),
+        // ],
       })
     )
     files: Array<Express.Multer.File>
