@@ -37,6 +37,7 @@ import {
   AnyFilesInterceptor,
   FileFieldsInterceptor,
   FileInterceptor,
+  FilesInterceptor,
 } from "@nestjs/platform-express";
 import { buildMessage } from "class-validator";
 import { AuthGuard } from "src/guards/auth.guards";
@@ -110,7 +111,7 @@ export class MerchantController {
   }
 
   @Post("/register/documents")
-  @UseInterceptors(FileFieldsInterceptor([{ name: "files", maxCount: 10 }]))
+  @UseInterceptors(FilesInterceptor("files"))
   @ApiOperation({ summary: "Register Merchant's Documents" })
   @HttpCode(HttpStatus.CREATED)
   registerDocuments(
@@ -127,6 +128,7 @@ export class MerchantController {
     )
     files: Array<Express.Multer.File>
   ) {
+    // console.log(files)
     return this.merchantService.registerDocuments(registerDocumentDTO, files);
   }
 
