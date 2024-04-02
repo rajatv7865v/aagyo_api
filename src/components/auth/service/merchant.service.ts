@@ -133,7 +133,9 @@ export class MerchantService extends CrudService {
         };
       }
 
-      const bankDetail = await this.storeModel.findOne({ merchant_id: id });
+      const bankDetail = await this.bankDetailModel.findOne({
+        merchant_id: id,
+      });
       if (!bankDetail) {
         return {
           id,
@@ -339,7 +341,9 @@ export class MerchantService extends CrudService {
         };
       }
 
-      const bankDetail = await this.storeModel.findOne({ merchant_id: id });
+      const bankDetail = await this.bankDetailModel.findOne({
+        merchant_id: id,
+      });
       if (!bankDetail) {
         return {
           STEP: 4,
