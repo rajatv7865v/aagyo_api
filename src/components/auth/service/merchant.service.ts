@@ -123,7 +123,7 @@ export class MerchantService extends CrudService {
         };
       }
 
-      if (!store?.slots?.length || !store?.isFullTimeOpen) {
+      if (!store?.slots?.length && !store?.isFullTimeOpen) {
         return {
           id,
           STEP: 3,
