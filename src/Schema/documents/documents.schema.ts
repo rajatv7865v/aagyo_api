@@ -20,7 +20,6 @@ export class Documents {
   documents: DocumentDetail[];
 }
 
-export type DocumentDetailDocument = DocumentDetail & Document;
-export const DocumentDetailSchema =
-  SchemaFactory.createForClass(DocumentDetail);
-export const DOCUMENTDETAIL_MODEL = DocumentDetail.name;
+export type DocumentDetailDocument = Documents & Document;
+export const DocumentDetailSchema = SchemaFactory.createForClass(Documents);
+export const DOCUMENTDETAIL_MODEL = Documents.name;
