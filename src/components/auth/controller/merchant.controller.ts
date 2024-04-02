@@ -115,7 +115,7 @@ export class MerchantController {
   @ApiOperation({ summary: "Register Merchant's Documents" })
   @HttpCode(HttpStatus.CREATED)
   registerDocuments(
-    @Body() registerDocumentDTO: RegisterDocumentDTO,
+    // @Body() registerDocumentDTO: RegisterDocumentDTO,
     @UploadedFiles(
       new ParseFilePipe({
         // validators: [
@@ -128,8 +128,8 @@ export class MerchantController {
     )
     files: Array<Express.Multer.File>
   ) {
-    // console.log(files)
-    return this.merchantService.registerDocuments(registerDocumentDTO, files);
+    console.log(files)
+    // return this.merchantService.registerDocuments(registerDocumentDTO, files);
   }
 
   @ApiOperation({ summary: "Get current step by id" })
