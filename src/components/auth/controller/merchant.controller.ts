@@ -110,7 +110,7 @@ export class MerchantController {
   }
 
   @Post("/register/documents")
-  @UseInterceptors(AnyFilesInterceptor())
+  @UseInterceptors(FileFieldsInterceptor([{ name: "files", maxCount: 10 }]))
   @ApiOperation({ summary: "Register Merchant's Documents" })
   @HttpCode(HttpStatus.CREATED)
   registerDocuments(
