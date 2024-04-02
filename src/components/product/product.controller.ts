@@ -27,16 +27,7 @@ export class ProductController {
   @UseInterceptors(FileInterceptor("file"))
   addProduct(
     @Body() createProductDTO: CreateProductDTO,
-    @UploadedFile(
-      new ParseFilePipe({
-        validators: [
-          new MaxFileSizeValidator({ maxSize: 10000000 }),
-          new FileTypeValidator({
-            fileType: /(image\/jpeg|image\/png|application\/pdf)/,
-          }),
-        ],
-      })
-    )
+    @UploadedFile()
     file: Express.Multer.File
   ) {
     return this.productService.addProduct(createProductDTO, file);

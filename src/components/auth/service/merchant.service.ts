@@ -309,10 +309,11 @@ export class MerchantService extends CrudService {
         merchant_id: new ObjectId(id),
         documents: documentsData,
       });
+      console.log(result);
 
       return {
         status: "SUCCESS",
-        message: REGISTERACCOUNT,
+        message: "Document Saved Successfully!",
       };
     } catch (err) {
       throw err;
