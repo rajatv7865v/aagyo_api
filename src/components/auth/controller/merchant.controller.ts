@@ -128,7 +128,6 @@ export class MerchantController {
     )
     files: Array<Express.Multer.File>
   ) {
-    // console.log(files)
     return this.merchantService.registerDocuments(registerDocumentDTO, files);
   }
 

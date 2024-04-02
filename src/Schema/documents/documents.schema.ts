@@ -7,6 +7,9 @@ export class DocumentDetail {
 
   @Prop()
   documentImg: string;
+
+  @Prop()
+  documentNumber: string;
 }
 @Schema({ timestamps: true })
 export class Documents {

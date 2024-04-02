@@ -290,20 +290,26 @@ export class MerchantService extends CrudService {
   ) {
     try {
       const { documents, id } = registerDocumentDTO;
-      const data = await this.s3Service.uploadMultipleFile(files);
+      const uploadedFiles = await this.s3Service.uploadMultipleFile(files);
       console.log(documents, "documents");
       console.log(id, "id");
       console.log(files, "files");
+      const documentsData = [];
+
+      for (let data of documents) {
+        let obj = {
+          documentName: data?.name,
+          documentNumber: data?.number,
+          documentImg: uploadedFiles?.filter(({ file }) => file == data.name),
+        };
+        documentsData.push(obj);
+      }
 
       const result = await this.documentModel.create({
-        // merchant_id: new ObjectId(id),
-        // documents: {
-        //   documentName:,
-        //   documentImg:
-        // }
+        merchant_id: new ObjectId(id),
+        documents: documentsData,
       });
 
-      console.log(files);
       return {
         status: "SUCCESS",
         message: REGISTERACCOUNT,
