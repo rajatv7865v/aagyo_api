@@ -306,7 +306,7 @@ export class MerchantService extends CrudService {
         };
         documentsData.push(obj);
       }
-
+      console.log("documentsData", documentsData);
       const result = await this.documentModel.create({
         merchant_id: new ObjectId(id),
         documents: documentsData,

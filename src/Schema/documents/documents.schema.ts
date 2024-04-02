@@ -5,8 +5,8 @@ export class DocumentDetail {
   @Prop()
   documentName: string;
 
-  @Prop()
-  documentImg: string;
+  @Prop({ type: Object })
+  documentImg: Object;
 
   @Prop()
   documentNumber: string;
