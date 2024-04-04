@@ -45,6 +45,12 @@ export class Store {
 
   @Prop({ required: false })
   contact: string;
+
+  @Prop({ type: Object })
+  openStatus: {
+    openStatus: boolean;
+    autoOpenTime: Date;
+  };
 }
 
 export type StoreDocument = Store & Document;

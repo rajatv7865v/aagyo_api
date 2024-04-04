@@ -15,7 +15,8 @@ import {
 import { MerchantService } from "./merchant.service";
 import { CreateMerchantDTO } from "./dto/createMerchant.dto";
 import { MerchantSortFilterDTO } from "./dto/merchantSortFilterDTO";
-import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiBody, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
+import { StoreStatus } from "./dto/store-Status.dto";
 
 @ApiTags("Merchant")
 @Controller("/merchant")
@@ -37,10 +38,8 @@ export class MerchantController {
   @Post("/create")
   @ApiOperation({ summary: "Register Merchant" })
   @ApiBody({
-    schema: {
-        
-      }
-    })
+    schema: {},
+  })
   @HttpCode(HttpStatus.CREATED)
   createMerchant(@Body() createMerchantDTO: CreateMerchantDTO) {
     return this.merchantService.createMerchant(createMerchantDTO);
@@ -60,5 +59,32 @@ export class MerchantController {
   @HttpCode(HttpStatus.OK)
   getAllStoresName() {
     return this.merchantService.getAllStoresName();
+  }
+
+  @Patch("/storeStatus/:merchantId")
+  @ApiOperation({ summary: "Update Store is open or Close" })
+  @ApiParam({
+    name: "merchantId",
+    description: "ID of the Merchnat",
+    type: String,
+  })
+  @HttpCode(HttpStatus.OK)
+  isStoreOpenStatus(
+    @Param("merchantId") merchantId: any,
+    @Body() storeStatus: StoreStatus
+  ) {
+    return this.merchantService.isStoreOpenStatus(merchantId, storeStatus);
+  }
+
+  @Get("profileDetail/:merchantId")
+  @ApiParam({
+    name: "merchantId",
+    description: "ID of the Merchnat",
+    type: String,
+  })
+  @ApiOperation({ summary: "Get  Merchant's Profile Detail" })
+  @HttpCode(HttpStatus.OK)
+  getProfileDetail(@Param("merchantId") merchantId: any) {
+    return this.merchantService.getProfileDetail(merchantId);
   }
 }

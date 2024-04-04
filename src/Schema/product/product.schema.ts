@@ -22,6 +22,9 @@ export class Product {
   @Prop({ type: [String], required: true })
   keywords: string[];
 
+  @Prop({ type: [], required: true })
+  varients: any[];
+
   @Prop({ type: Object, required: true })
   storeImage: Object;
 }

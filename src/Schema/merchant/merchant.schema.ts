@@ -1,5 +1,4 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { IsObject, ValidateNested } from "class-validator";
 import mongoose, { Date, Document } from "mongoose";
 
 @Schema({ timestamps: true })

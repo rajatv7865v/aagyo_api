@@ -37,6 +37,11 @@ export class CreateProductDTO {
   @IsArray()
   attributes: any[];
 
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsArray()
+  varients: any[];
+
   @ApiProperty({
     type: "object",
     format: "binary",

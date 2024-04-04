@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+} from "@nestjs/common";
 import { CreateMerchantDTO } from "./dto/createMerchant.dto";
 import { CrudService } from "src/base/crud.service";
 import { InjectModel } from "@nestjs/mongoose";
@@ -6,12 +10,17 @@ import { MERCHANT_MODEL, MerchantDocument } from "src/Schema/merchant";
 import { Model } from "mongoose";
 import { ExceptionsHandler } from "@nestjs/core/exceptions/exceptions-handler";
 import { MerchantSortFilterDTO } from "./dto/merchantSortFilterDTO";
+import { StoreStatus } from "./dto/store-Status.dto";
+import { STORE_MODEL, StoreDocument } from "src/Schema/store";
+import { ObjectId } from "mongodb";
 
 @Injectable()
 export class MerchantService extends CrudService {
   constructor(
     @InjectModel(MERCHANT_MODEL)
-    private readonly merchantModel: Model<MerchantDocument>
+    private readonly merchantModel: Model<MerchantDocument>,
+    @InjectModel(STORE_MODEL)
+    private readonly storeModel: Model<StoreDocument>
   ) {
     super(merchantModel);
   }
@@ -161,6 +170,81 @@ export class MerchantService extends CrudService {
       };
     } catch (err) {
       throw new ExceptionsHandler(err);
+    }
+  }
+
+  async isStoreOpenStatus(
+    merchantId: Object,
+    storeStatus: StoreStatus
+  ): Promise<any> {
+    try {
+      const { isOpen, autoOpenTime } = storeStatus;
+      const result = await this.storeModel.findOneAndUpdate(
+        { merchant_id: new Object(merchantId) },
+        {
+          $set: {
+            openStatus: {
+              openStatus: isOpen,
+              autoOpenTime: autoOpenTime,
+            },
+          },
+        }
+      );
+      return {
+        message: isOpen
+          ? "Store Open Successfully!"
+          : "Store Close Successfully",
+      };
+    } catch (error) {
+      throw new ExceptionsHandler(error);
+    }
+  }
+
+  async getProfileDetail(merchantId: ObjectId): Promise<any> {
+    try {
+      const aggregatePipeline: any = [
+        {
+          $match: {
+            _id: new ObjectId(merchantId),
+          },
+        },
+        {
+          $lookup: {
+            from: "stores",
+            localField: "_id",
+            foreignField: "merchant_id",
+            as: "storeDetail",
+          },
+        },
+        {
+          $unwind: "$storeDetail",
+        },
+        {
+          $project: {
+            banner: "$storeDetail.banner",
+            ownerDetail: {
+              name: "$name",
+              email: "$email",
+              phone: "$contact",
+            },
+            managerDetail: {
+              name: "$name",
+              email: "$email",
+              phone: "$contact",
+            },
+            outletContact: {
+              primaryNumber: "$contact",
+              secondaryNumber: "$contact",
+            },
+          },
+        },
+      ];
+      const result = await this.merchantModel.aggregate(aggregatePipeline);
+      return {
+        result: result[0],
+      };
+    } catch (error) {
+      throw new ExceptionsHandler(error);
     }
   }
 }
