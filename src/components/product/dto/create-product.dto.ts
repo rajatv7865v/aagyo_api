@@ -41,12 +41,4 @@ export class CreateProductDTO {
   @IsNotEmpty()
   @IsArray()
   varients: any[];
-
-  @ApiProperty({
-    type: "object",
-    format: "binary",
-    description: "The file to upload",
-    required: true,
-  })
-  file: File;
 }
