@@ -190,7 +190,7 @@ export class MerchantService extends CrudService {
       );
       return {
         status: "SUCCESS",
-        message: REGISTERACCOUNT,
+        message: "Owner Details Saved Successfully!",
       };
     } catch (err) {
       throw err;
@@ -217,7 +217,7 @@ export class MerchantService extends CrudService {
       });
       return {
         status: "SUCCESS",
-        message: REGISTERACCOUNT,
+        message: "Store Details Saved Successfully!",
       };
     } catch (error) {
       if (
@@ -249,7 +249,7 @@ export class MerchantService extends CrudService {
       );
       return {
         status: "SUCCESS",
-        message: REGISTERACCOUNT,
+        message: "Store Timing Saved Successfully!",
       };
     } catch (err) {
       console.log(err);
@@ -279,7 +279,7 @@ export class MerchantService extends CrudService {
       });
       return {
         status: "SUCCESS",
-        message: REGISTERACCOUNT,
+        message: "Bank Details Saved Successfully!",
       };
     } catch (err) {
       throw err;
@@ -356,7 +356,7 @@ export class MerchantService extends CrudService {
       if (!document) {
         return {
           STEP: 5,
-          statusCode: 2,
+          statusCode: 1,
           status: "SUCCESS",
         };
       }
