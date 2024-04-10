@@ -149,7 +149,7 @@ export class MerchantService extends CrudService {
       const document = await this.documentModel.findOne({ merchant_id: id });
       if (!document) {
         return {
-          data: document,
+          id,
           STEP: 5,
           statusCode: 2,
           status: "SUCCESS",
