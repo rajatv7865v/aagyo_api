@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   HttpException,
   HttpStatus,
   Injectable,
@@ -38,7 +39,7 @@ import {
   DocumentDetailDocument,
 } from "src/Schema/documents";
 import { S3Service } from "src/components/s3/s3.service";
-import { Multer } from "multer";
+import { ExceptionsHandler } from "@nestjs/core/exceptions/exceptions-handler";
 
 @Injectable()
 export class MerchantService extends CrudService {
@@ -294,9 +295,6 @@ export class MerchantService extends CrudService {
     try {
       const { documents, id } = registerDocumentDTO;
       const uploadedFiles = await this.s3Service.uploadMultipleFile(files);
-      console.log(documents, "documents");
-      console.log(id, "id");
-      console.log(files, "files");
       const documentsData = [];
 
       for (let data of documents) {
@@ -325,6 +323,24 @@ export class MerchantService extends CrudService {
 
   async getStepById(id: ObjectId) {
     try {
+      if (!id) {
+        return {
+          status: "FAILED",
+          STEP: 0,
+        };
+      }
+      const merchant = await this.merchantModel.findOne({
+        _id: id,
+      });
+
+      if (!merchant?.name) {
+        return {
+          STEP: 1,
+          statusCode: 2,
+          status: "PENDING",
+        };
+      }
+
       const store = await this.storeModel.findOne({ merchant_id: id });
       if (!store) {
         return {
@@ -334,7 +350,7 @@ export class MerchantService extends CrudService {
         };
       }
 
-      if (!store?.slots?.length || !store?.isFullTimeOpen) {
+      if (!store?.slots?.length && !store?.isFullTimeOpen) {
         return {
           STEP: 3,
           statusCode: 2,
@@ -362,7 +378,7 @@ export class MerchantService extends CrudService {
         };
       }
     } catch (error) {
-      throw error;
+      throw new ForbiddenException(error);
     }
   }
 }

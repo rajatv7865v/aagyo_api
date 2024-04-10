@@ -32,14 +32,14 @@ import { RegisterBankDetailDTO } from "../dto/registerDTO/register-bankDetails.d
 import { RegisterDocumentDTO } from "../dto/registerDTO/register-document.dto";
 import { RegisterTime } from "../dto/registerDTO/register-registerTime.dto";
 import { RegisterMerchantDTO } from "../dto/registerDTO/register.dto";
-import { ObjectId } from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
 import {
   AnyFilesInterceptor,
   FileFieldsInterceptor,
   FileInterceptor,
   FilesInterceptor,
 } from "@nestjs/platform-express";
-import { buildMessage } from "class-validator";
+import { IsObject, buildMessage } from "class-validator";
 import { AuthGuard } from "src/guards/auth.guards";
 
 // @UseGuards(AuthGuard)
@@ -131,10 +131,16 @@ export class MerchantController {
     return this.merchantService.registerDocuments(registerDocumentDTO, files);
   }
 
-  @ApiOperation({ summary: "Get current step by id" })
   @HttpCode(HttpStatus.OK)
   @Get("step/:id")
+  @ApiOperation({ summary: "Get current step by id" })
+  @ApiParam({
+    name: "id",
+    description: "ID of the Merchnat",
+    type: String,
+  })
   getStepById(@Param("id") id: any) {
+    console.log(id);
     return this.merchantService.getStepById(id);
   }
 }
