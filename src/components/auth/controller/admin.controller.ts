@@ -8,40 +8,28 @@ import {
   ApiQuery,
   ApiTags,
 } from "@nestjs/swagger";
+import { AdminSignupDTO } from "../dto/admin-Signup.dto";
 
 @ApiTags("admin")
 @Controller("/admin")
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
-  @Post("/signIn")
+
   @ApiOperation({ summary: "Login Admin" })
-  @ApiParam({
-    name: "id",
-    type: "integer",
-    description: "enter unique value",
-    required: true,
-  })
-  @ApiQuery({
-    name: "id",
-    type: "integer",
-    description: "enter unique value",
-    required: true,
-  })
-  @ApiBody({
-    schema: {
-      type: "object",
-      properties: {
-        id: {
-          type: "integer",
-          example: 5,
-          description: "this is unique",
-        },
-      },
-    },
-  })
+  @Post("/signIn")
+  @ApiBody({ type: AdminLoginDTO })
   signInAccount(
     @Body() adminLoginDTO: AdminLoginDTO
   ): Promise<{ message: string }> {
     return this.adminService.signInAccount(adminLoginDTO);
+  }
+
+  @ApiOperation({ summary: "Signup Admin Account" })
+  @Post("/signUp")
+  @ApiBody({ type: AdminSignupDTO })
+  signUpAccount(
+    @Body() adminSignupDTO: AdminSignupDTO
+  ): Promise<{ message: string }> {
+    return this.adminService.signUpAccount(adminSignupDTO);
   }
 }

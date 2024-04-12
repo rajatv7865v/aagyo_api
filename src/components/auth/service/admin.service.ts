@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   UnauthorizedException,
 } from "@nestjs/common";
@@ -11,6 +12,8 @@ import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from "bcrypt";
 import { ADMIN_MODEL, AdminDocument } from "src/Schema/admin";
 import { SIGNIN, USERNOTEXIST, WRONGPASSWORD } from "src/utils/messages";
+import { ExceptionsHandler } from "@nestjs/core/exceptions/exceptions-handler";
+import { AdminSignupDTO } from "../dto/admin-Signup.dto";
 
 @Injectable()
 export class AdminService extends CrudService {
@@ -35,16 +38,33 @@ export class AdminService extends CrudService {
       if (!comparePassword) {
         throw new UnauthorizedException(WRONGPASSWORD);
       }
-      const payload = { sub: user._id, userName: user.name,userEmail:user.email };
+      const payload = {
+        sub: user._id,
+        userName: user.name,
+        userEmail: user.email,
+      };
       const access_token = await this.jwtService.signAsync(payload);
 
       return {
         status: "ACCOUNT_LOGIN_SUCESSFULLY",
         access_token,
-        message:SIGNIN
+        message: SIGNIN,
       };
     } catch (err) {
-      throw new err();
+      throw new ExceptionsHandler(err);
+    }
+  }
+
+  async signUpAccount(adminSignupDTO: AdminSignupDTO): Promise<any> {
+    try {
+      const { email, name, password } = adminSignupDTO;
+      const result = await this.adminModel.create();
+      return {
+        message: "Account Signup Successfully!",
+        STATUS: "SUCCESS",
+      };
+    } catch (error) {
+      throw new ExceptionsHandler(error);
     }
   }
 }
