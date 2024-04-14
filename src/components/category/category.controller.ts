@@ -34,14 +34,14 @@ export class CategoryController {
   createCategory(
     @Body() createCategoryDTO: CreateCategoryDTO,
     @UploadedFile(
-      new ParseFilePipe({
-        validators: [
-          new MaxFileSizeValidator({ maxSize: 10000000 }),
-          new FileTypeValidator({
-            fileType: /(image\/jpeg|image\/png|application\/pdf)/,
-          }),
-        ],
-      })
+      // new ParseFilePipe({
+      //   validators: [
+      //     new MaxFileSizeValidator({ maxSize: 10000000 }),
+      //     new FileTypeValidator({
+      //       fileType: /(image\/jpeg|image\/png|application\/pdf)/,
+      //     }),
+      //   ],
+      // })
     )
     file: Express.Multer.File
   ) {
