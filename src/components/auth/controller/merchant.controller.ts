@@ -140,7 +140,6 @@ export class MerchantController {
     type: String,
   })
   getStepById(@Param("id") id: any) {
-    console.log(id);
     return this.merchantService.getStepById(id);
   }
 }

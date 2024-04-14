@@ -361,10 +361,15 @@ export class MerchantService extends CrudService {
       if (!document) {
         return {
           STEP: 5,
-          statusCode: 1,
-          status: "SUCCESS",
+          statusCode: 2,
+          status: "PENDING",
         };
       }
+      return {
+        STEP: 6,
+        statusCode: 1,
+        status: "SUCCESS",
+      };
     } catch (error) {
       throw new ForbiddenException(error);
     }
