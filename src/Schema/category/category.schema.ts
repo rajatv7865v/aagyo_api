@@ -6,8 +6,11 @@ export class Category {
   @Prop({ required: true })
   name: string;
 
-  @Prop({type:Object, required: true })
+  @Prop({ type: Object, required: true })
   banner: object;
+
+  @Prop({ type: Boolean, default: true })
+  status: boolean;
 }
 
 export type CategoryDocument = Category & Document;
