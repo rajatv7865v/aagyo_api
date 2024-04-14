@@ -8,18 +8,9 @@ import {
 } from "@nestjs/common";
 import { CrudService } from "src/base/crud.service";
 import { InjectModel } from "@nestjs/mongoose";
-import mongoose, { Model } from "mongoose";
+import { Model } from "mongoose";
 import { JwtService } from "@nestjs/jwt";
-import {
-  ACCOUNTALREADYEXIST,
-  MERCHANTNOTEXIST,
-  REGISTER,
-  REGISTERACCOUNT,
-  SENDOTP,
-  SIGNIN,
-  WRONGOTP,
-  WRONGPASSWORD,
-} from "src/utils/messages";
+import { REGISTERACCOUNT, SENDOTP, SIGNIN, WRONGOTP } from "src/utils/messages";
 import { MERCHANT_MODEL, MerchantDocument } from "src/Schema/merchant";
 import { MerchantLoginDTO } from "../dto/merchantLogin.dto";
 import { VerifyOTPDTO } from "../dto/verifyOTP.dto";
@@ -27,9 +18,7 @@ import { RegisterStoreDetailDTO } from "../dto/registerDTO/register-storeDetails
 import { RegisterOwnerDetailDTO } from "../dto/registerDTO/register-ownerDetail.dto";
 import { RegisterBankDetailDTO } from "../dto/registerDTO/register-bankDetails.dto";
 import { RegisterDocumentDTO } from "../dto/registerDTO/register-document.dto";
-import { jwtConstants } from "src/constants/auth.constant";
 import { RegisterTime } from "../dto/registerDTO/register-registerTime.dto";
-import { RegisterMerchantDTO } from "../dto/registerDTO/register.dto";
 import { createToken, generateOTP, validateOTP } from "src/utils/helper";
 import { ObjectId } from "mongodb";
 import { BANKDETAIL_MODEL, BankDetailDocument } from "src/Schema/bankDetail";
@@ -39,7 +28,6 @@ import {
   DocumentDetailDocument,
 } from "src/Schema/documents";
 import { S3Service } from "src/components/s3/s3.service";
-import { ExceptionsHandler } from "@nestjs/core/exceptions/exceptions-handler";
 
 @Injectable()
 export class MerchantService extends CrudService {

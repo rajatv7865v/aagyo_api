@@ -9,6 +9,7 @@ import {
   Status,
 } from "./dto/createShippingCharge.dto";
 import { SortFilterDTO } from "../../common/DTO/sortFilter.dto";
+import { ExceptionsHandler } from "@nestjs/core/exceptions/exceptions-handler";
 
 @Injectable()
 export class ShippingChargeService extends CrudService {
@@ -64,7 +65,7 @@ export class ShippingChargeService extends CrudService {
         result,
       };
     } catch (err) {
-      throw new err();
+      throw new ExceptionsHandler(err);
     }
   }
 
@@ -86,7 +87,7 @@ export class ShippingChargeService extends CrudService {
         status: true,
       };
     } catch (err) {
-      throw new err();
+       throw new ExceptionsHandler(err);
     }
   }
 
@@ -114,7 +115,7 @@ export class ShippingChargeService extends CrudService {
         message: "Shipping Charge Deleted Sucessfully!",
       };
     } catch (err) {
-      throw new err();
+       throw new ExceptionsHandler(err);
     }
   }
 
@@ -140,7 +141,7 @@ export class ShippingChargeService extends CrudService {
         message: "Shipping Charge Updated Sucessfully!",
       };
     } catch (err) {
-      throw new err();
+       throw new ExceptionsHandler(err);
     }
   }
 }
