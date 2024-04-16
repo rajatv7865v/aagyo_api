@@ -7,13 +7,13 @@ import { CreateMerchantDTO } from "./dto/createMerchant.dto";
 import { CrudService } from "src/base/crud.service";
 import { InjectModel } from "@nestjs/mongoose";
 import { MERCHANT_MODEL, MerchantDocument } from "src/Schema/merchant";
-import { Model } from "mongoose";
+import mongoose, { Model } from "mongoose";
 import { ExceptionsHandler } from "@nestjs/core/exceptions/exceptions-handler";
 import { MerchantSortFilterDTO } from "./dto/merchantSortFilterDTO";
 import { StoreStatus } from "./dto/store-Status.dto";
 import { STORE_MODEL, StoreDocument } from "src/Schema/store";
 import { ObjectId } from "mongodb";
-import { addDays, addHours, format } from "date-fns";
+import { addDays, addHours, format, parse } from "date-fns";
 
 @Injectable()
 export class MerchantService extends CrudService {
@@ -181,7 +181,6 @@ export class MerchantService extends CrudService {
     try {
       const { isOpen, autoOpenTime } = storeStatus;
       const curerentDateAndTime = new Date();
-
       let time: Date;
       switch (autoOpenTime) {
         case "TWOHOUR":
@@ -191,33 +190,43 @@ export class MerchantService extends CrudService {
           time = addHours(curerentDateAndTime, 4);
           break;
         case "TOMMAROW":
-          
-          time = addDays(curerentDateAndTime, 1);
+          let storeTime: any = await this.storeModel.findOne({
+            merchant_id: new Object(merchantId),
+          });
+          if (storeTime.slots) {
+            storeTime = storeTime?.slots[0]?.openTime;
+            storeTime = parse(storeTime, "hh:mm a", new Date());
+            let nextDate = addDays(storeTime, 1);
+            if (nextDate) {
+              time = nextDate;
+            }
+          } else {
+            time = addDays(curerentDateAndTime, 1);
+          }
           break;
         case "CUSTOM":
           time = new Date();
           break;
       }
-      console.log(new Date());
-      console.log(time);
 
-      // const result = await this.storeModel.findOneAndUpdate(
-      //   { merchant_id: new Object(merchantId) },
-      //   {
-      //     $set: {
-      //       openStatus: {
-      //         openStatus: isOpen,
-      //         autoOpenTime: autoOpenTime,
-      //       },
-      //     },
-      //   }
-      // );
+      const result = await this.storeModel.findOneAndUpdate(
+        { merchant_id: new Object(merchantId) },
+        {
+          $set: {
+            openStatus: {
+              openStatus: isOpen,
+              autoOpenTime: time,
+            },
+          },
+        }
+      );
       return {
         message: isOpen
           ? "Store Open Successfully!"
           : "Store Close Successfully",
       };
     } catch (error) {
+      console.log(error);
       throw new ExceptionsHandler(error);
     }
   }
