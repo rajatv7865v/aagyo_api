@@ -6,24 +6,20 @@ import {
   Param,
   HttpCode,
   HttpStatus,
-  Query,
-  Delete,
   Patch,
   UseInterceptors,
   UploadedFile,
-  ParseFilePipe,
-  MaxFileSizeValidator,
-  FileTypeValidator,
+  UseGuards,
 } from "@nestjs/common";
-
 import { CategoryService } from "./category.service";
-import { SortFilterDTO } from "src/common/DTO/sortFilter.dto";
 import { CreateCategoryDTO } from "./dto/create-category.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiBody, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
 import { CategoryStatusDTO } from "./dto/update-status.dto";
+import { AuthGuard } from "src/guards/auth.guards";
 
 @ApiTags("Category")
+@UseGuards(AuthGuard)
 @Controller("category")
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
@@ -35,8 +31,8 @@ export class CategoryController {
   createCategory(
     @Body() createCategoryDTO: CreateCategoryDTO,
     @UploadedFile() // new ParseFilePipe({
-    //   validators: [
-    file //     new MaxFileSizeValidator({ maxSize: 10000000 }),
+    //     new MaxFileSizeValidator({ maxSize: 10000000 }),
+    file //   validators: [
     //     new FileTypeValidator({
     //       fileType: /(image\/jpeg|image\/png|application\/pdf)/,
     //     }),

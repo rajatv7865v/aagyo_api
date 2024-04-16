@@ -20,6 +20,7 @@ export class AuthGuard implements CanActivate {
     } catch (err) {
       throw new UnauthorizedException(err.message);
     }
+    console.log("is gaurd");
     return true;
   }
 }

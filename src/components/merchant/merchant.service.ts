@@ -13,6 +13,7 @@ import { MerchantSortFilterDTO } from "./dto/merchantSortFilterDTO";
 import { StoreStatus } from "./dto/store-Status.dto";
 import { STORE_MODEL, StoreDocument } from "src/Schema/store";
 import { ObjectId } from "mongodb";
+import { addDays, addHours, format } from "date-fns";
 
 @Injectable()
 export class MerchantService extends CrudService {
@@ -179,17 +180,38 @@ export class MerchantService extends CrudService {
   ): Promise<any> {
     try {
       const { isOpen, autoOpenTime } = storeStatus;
-      const result = await this.storeModel.findOneAndUpdate(
-        { merchant_id: new Object(merchantId) },
-        {
-          $set: {
-            openStatus: {
-              openStatus: isOpen,
-              autoOpenTime: autoOpenTime,
-            },
-          },
-        }
-      );
+      const curerentDateAndTime = new Date();
+
+      let time: Date;
+      switch (autoOpenTime) {
+        case "TWOHOUR":
+          time = addHours(curerentDateAndTime, 2);
+          break;
+        case "FOURHOUR":
+          time = addHours(curerentDateAndTime, 4);
+          break;
+        case "TOMMAROW":
+          
+          time = addDays(curerentDateAndTime, 1);
+          break;
+        case "CUSTOM":
+          time = new Date();
+          break;
+      }
+      console.log(new Date());
+      console.log(time);
+
+      // const result = await this.storeModel.findOneAndUpdate(
+      //   { merchant_id: new Object(merchantId) },
+      //   {
+      //     $set: {
+      //       openStatus: {
+      //         openStatus: isOpen,
+      //         autoOpenTime: autoOpenTime,
+      //       },
+      //     },
+      //   }
+      // );
       return {
         message: isOpen
           ? "Store Open Successfully!"

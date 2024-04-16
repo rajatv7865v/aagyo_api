@@ -9,11 +9,13 @@ import {
   Query,
   Delete,
   Patch,
+  UseGuards,
 } from "@nestjs/common";
 
 import { CustomerEnquaryService } from "./customerEnquary.service";
 import { CreateCustomerEnquaryDTO } from "./dto/create-CustomerEnquary.dto";
 import { SortFilterDTO } from "src/common/DTO/sortFilter.dto";
+import { AuthGuard } from "src/guards/auth.guards";
 
 @Controller("shippingCharge")
 export class CustomerEnquaryController {

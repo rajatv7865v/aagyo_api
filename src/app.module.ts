@@ -18,6 +18,7 @@ import { UnitModule } from "./components/unit/unit.module";
 import { CategoryModule } from "./components/category/category.module";
 import { ProductModule } from "./components/product/product.module";
 import { MailModule } from "./components/mail/mail.module";
+import { JwtModule, JwtService } from "@nestjs/jwt";
 
 @Module({
   imports: [

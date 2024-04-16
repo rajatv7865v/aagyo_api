@@ -293,7 +293,6 @@ export class MerchantService extends CrudService {
         };
         documentsData.push(obj);
       }
-      console.log("documentsData", documentsData);
       const result = await this.documentModel.create({
         merchant_id: new ObjectId(id),
         documents: [...documentsData],
@@ -368,6 +367,7 @@ export class MerchantService extends CrudService {
       return {
         STEP: 6,
         statusCode: 1,
+        storeStatus: store?.openStatus,
         status: "SUCCESS",
       };
     } catch (error) {

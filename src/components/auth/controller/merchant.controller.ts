@@ -130,7 +130,6 @@ export class MerchantController {
   ) {
     return this.merchantService.registerDocuments(registerDocumentDTO, files);
   }
-
   @HttpCode(HttpStatus.OK)
   @Get("step/:id")
   @ApiOperation({ summary: "Get current step by id" })
