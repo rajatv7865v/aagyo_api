@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { CrudService } from "src/base/crud.service";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model, mongo } from "mongoose";
@@ -7,7 +7,6 @@ import { CATEGORY_MODEL, CategoryDocument } from "src/Schema/category";
 import { CreateCategoryDTO } from "./dto/create-category.dto";
 import { S3Service } from "../s3/s3.service";
 import { CategoryStatusDTO } from "./dto/update-status.dto";
-import { stat } from "fs";
 
 @Injectable()
 export class CategoryService extends CrudService {
@@ -19,30 +18,38 @@ export class CategoryService extends CrudService {
     super(categoryModel);
   }
   async createCategory(
+    user: any,
     createCategoryDTO: CreateCategoryDTO,
     file: Express.Multer.File
   ): Promise<any> {
     try {
       const { categoryName } = createCategoryDTO;
       const uploadedFile = await this.s3Service.uploadFile(file);
-      const result = await this.categoryModel.create({
+
+      const createData = {
         name: categoryName,
         banner: uploadedFile,
-      });
+      };
+      const data = Object.assign(createData, { createdBy: user.sub });
+      await this.categoryModel.create(data);
       return {
         message: "Category Created Sucessfully!",
         status: "SUCCESS",
       };
     } catch (err) {
+      console.log(err);
       throw err;
     }
   }
 
-  async getAllCategory(): Promise<{ result: string[] }> {
+  async getAllCategory(user: any): Promise<{ result: string[] }> {
     try {
+      const { sub } = user;
       const aggregatePipeline: any = [
         {
-          $match: {},
+          $match: {
+            createdBy: new mongo.ObjectId(sub),
+          },
         },
         {
           $group: {
@@ -67,11 +74,14 @@ export class CategoryService extends CrudService {
     }
   }
 
-  async getAllCategoryWithStatus(): Promise<any> {
+  async getAllCategoryWithStatus(user: any): Promise<any> {
     try {
+      const { sub } = user;
       const aggregatePipeline: any = [
         {
-          $match: {},
+          $match: {
+            createdBy: new mongo.ObjectId(sub),
+          },
         },
         {
           $project: {

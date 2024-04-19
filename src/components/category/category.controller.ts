@@ -10,6 +10,7 @@ import {
   UseInterceptors,
   UploadedFile,
   UseGuards,
+  Req,
 } from "@nestjs/common";
 import { CategoryService } from "./category.service";
 import { CreateCategoryDTO } from "./dto/create-category.dto";
@@ -17,6 +18,7 @@ import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiBody, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
 import { CategoryStatusDTO } from "./dto/update-status.dto";
 import { AuthGuard } from "src/guards/auth.guards";
+import { Public } from "src/decorators/public.decorator";
 
 @ApiTags("Category")
 @UseGuards(AuthGuard)
@@ -29,10 +31,11 @@ export class CategoryController {
   @HttpCode(HttpStatus.CREATED)
   @UseInterceptors(FileInterceptor("file"))
   createCategory(
+    @Req() { user }: any,
     @Body() createCategoryDTO: CreateCategoryDTO,
     @UploadedFile() // new ParseFilePipe({
-    //     new MaxFileSizeValidator({ maxSize: 10000000 }),
-    file //   validators: [
+    //   validators: [
+    file //     new MaxFileSizeValidator({ maxSize: 10000000 }),
     //     new FileTypeValidator({
     //       fileType: /(image\/jpeg|image\/png|application\/pdf)/,
     //     }),
@@ -40,20 +43,21 @@ export class CategoryController {
     // })
     : Express.Multer.File
   ) {
-    return this.categoryService.createCategory(createCategoryDTO, file);
+    return this.categoryService.createCategory(user, createCategoryDTO, file);
   }
 
   @Get("getAll")
   @HttpCode(HttpStatus.OK)
-  getAllCategory() {
-    return this.categoryService.getAllCategory();
+  getAllCategory(@Req() { user }: any) {
+    return this.categoryService.getAllCategory(user);
   }
 
+  @Public()
   @ApiOperation({ summary: "Get All Category with status and banner" })
   @Get("getAllWithStatus")
   @HttpCode(HttpStatus.OK)
-  getAllCategoryWithStatus() {
-    return this.categoryService.getAllCategoryWithStatus();
+  getAllCategoryWithStatus(@Req() { user }: any) {
+    return this.categoryService.getAllCategoryWithStatus(user);
   }
 
   @ApiOperation({ summary: "Update Category Status" })

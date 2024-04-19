@@ -8,19 +8,23 @@ import { MerchantService } from "./service/merchant.service";
 import { S3Module } from "../s3/s3.module";
 import { JWT_CONFIG } from "src/config/jwt.config";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { PassportModule } from "@nestjs/passport";
 
 @Module({
   imports: [
+    PassportModule.register({ defaultStrategy: "jwt" }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
-        global: true,
-        secret: configService.get<string>("JWT.SECRET"),
-        signOptions: {
-          expiresIn: configService.get<string>("JWT.EXPIRE_TIME"),
-        },
-      }),
+      useFactory: async (configService: ConfigService) => {
+        return {
+          secret: configService.get<string>("JWT.SECRET"),
+          signOptions: {
+            expiresIn: configService.get<string | number>("JWT.EXPIRE_TIME"),
+          },
+        };
+      },
+      global: true,
     }),
     S3Module,
   ],
