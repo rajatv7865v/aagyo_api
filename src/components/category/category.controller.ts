@@ -47,8 +47,8 @@ export class CategoryController {
 
   @Get("getAll")
   @HttpCode(HttpStatus.OK)
-  getAllCategory(@Req() { user }: any) {
-    return this.categoryService.getAllCategory(user);
+  getAllCategory() {
+    return this.categoryService.getAllCategory();
   }
   @UseGuards(AuthGuard)
   @Public()

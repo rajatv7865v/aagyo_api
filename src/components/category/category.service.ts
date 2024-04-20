@@ -42,14 +42,11 @@ export class CategoryService extends CrudService {
     }
   }
 
-  async getAllCategory(user: any): Promise<{ result: string[] }> {
+  async getAllCategory(): Promise<{ result: string[] }> {
     try {
-      const { sub } = user;
       const aggregatePipeline: any = [
         {
-          $match: {
-            createdBy: new mongo.ObjectId(sub),
-          },
+          $match: {},
         },
         {
           $group: {
