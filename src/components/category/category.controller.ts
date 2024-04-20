@@ -21,11 +21,10 @@ import { AuthGuard } from "src/guards/auth.guards";
 import { Public } from "src/decorators/public.decorator";
 
 @ApiTags("Category")
-@UseGuards(AuthGuard)
 @Controller("category")
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
-
+  @UseGuards(AuthGuard)
   @ApiOperation({ summary: "Add Category" })
   @Post("create")
   @HttpCode(HttpStatus.CREATED)
@@ -51,7 +50,7 @@ export class CategoryController {
   getAllCategory(@Req() { user }: any) {
     return this.categoryService.getAllCategory(user);
   }
-
+  @UseGuards(AuthGuard)
   @Public()
   @ApiOperation({ summary: "Get All Category with status and banner" })
   @Get("getAllWithStatus")
@@ -59,7 +58,7 @@ export class CategoryController {
   getAllCategoryWithStatus(@Req() { user }: any) {
     return this.categoryService.getAllCategoryWithStatus(user);
   }
-
+  @UseGuards(AuthGuard)
   @ApiOperation({ summary: "Update Category Status" })
   @ApiParam({ name: "id", description: "Category Id" })
   @ApiBody({ type: CategoryStatusDTO })
