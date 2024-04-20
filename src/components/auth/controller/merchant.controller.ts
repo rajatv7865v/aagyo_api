@@ -74,14 +74,18 @@ export class MerchantController {
 
   @Post("/register/storeDetail")
   @UseInterceptors(FileInterceptor("storeImage"))
+  @ApiConsumes("multipart/form-data")
+  @ApiBody({
+    description: "Store Detail",
+    type: RegisterStoreDetailDTO,
+  })
   @ApiOperation({ summary: "Register Store Detail " })
   @HttpCode(HttpStatus.CREATED)
   registerStoreDetail(
     @Body() registerStoreDetailDTO: RegisterStoreDetailDTO,
-    @UploadedFile()
-    storeImage // new ParseFilePipe({
-    //   // validators: [
+    @UploadedFile() // new ParseFilePipe({
     //   //   new MaxFileSizeValidator({ maxSize: 100000000 }),
+    storeImage //   // validators: [
     //   //   new FileTypeValidator({
     //   //     fileType: /(image\/jpeg|image\/png|application\/pdf)/,
     //   //   }),

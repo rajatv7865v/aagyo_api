@@ -40,4 +40,7 @@ export class RegisterStoreDetailDTO {
   @IsNotEmpty()
   @IsString()
   address: string;
+
+  @ApiProperty({ type: "string", format: "binary" })
+  storeImage: any;
 }
