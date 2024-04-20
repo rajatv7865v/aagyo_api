@@ -12,12 +12,12 @@ enum StoreTime {
   FOURHOUR = "FOURHOUR",
   TOMMAROW = "TOMMAROW",
   CUSTOM = "CUSTOM",
+  NULL = "NULL",
 }
 
 export class StoreStatus {
   @ApiProperty()
   @IsBoolean()
-  @IsNotEmpty()
   isOpen: boolean = true;
 
   @ApiProperty({ enum: StoreTime, enumName: "StoreTime" })

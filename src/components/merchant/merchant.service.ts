@@ -207,6 +207,9 @@ export class MerchantService extends CrudService {
         case "CUSTOM":
           time = new Date();
           break;
+        default:
+          time = new Date();
+          break;
       }
 
       const result = await this.storeModel.findOneAndUpdate(
