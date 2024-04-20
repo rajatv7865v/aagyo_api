@@ -73,27 +73,26 @@ export class MerchantController {
   }
 
   @Post("/register/storeDetail")
-  @UseInterceptors(FileInterceptor("banner"))
+  @UseInterceptors(FileInterceptor("storeImage"))
   @ApiOperation({ summary: "Register Store Detail " })
   @HttpCode(HttpStatus.CREATED)
   registerStoreDetail(
     @Body() registerStoreDetailDTO: RegisterStoreDetailDTO,
-    @UploadedFile(
-      new ParseFilePipe({
-        // validators: [
-        //   new MaxFileSizeValidator({ maxSize: 100000000 }),
-        //   new FileTypeValidator({
-        //     fileType: /(image\/jpeg|image\/png|application\/pdf)/,
-        //   }),
-        // ],
-      })
-    )
-    banner: Express.Multer.File
+    @UploadedFile()
+    storeImage // new ParseFilePipe({
+    //   // validators: [
+    //   //   new MaxFileSizeValidator({ maxSize: 100000000 }),
+    //   //   new FileTypeValidator({
+    //   //     fileType: /(image\/jpeg|image\/png|application\/pdf)/,
+    //   //   }),
+    //   // ],
+    // })
+    : Express.Multer.File
   ) {
-    console.log("banner", banner);
+    console.log("banner", storeImage);
     return this.merchantService.registerStoreDetail(
       registerStoreDetailDTO,
-      banner
+      storeImage
     );
   }
 
