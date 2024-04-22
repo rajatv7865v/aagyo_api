@@ -23,13 +23,13 @@ export class ProductService extends CrudService {
     productImage: Express.Multer.File
   ): Promise<any> {
     try {
-      const { category, description, keywords, productName, tags, varients } =
+      const { categoryId, description, keywords, productName, tags, varients } =
         createProductDTO;
       const uploadFile = await this.s3Service.uploadFile(productImage);
       const result = await this.productModel.create({
         productOwner: new ObjectId(sub),
         productName,
-        category,
+        categoryId: categoryId,
         description,
         keywords,
         tags,

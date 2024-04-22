@@ -1,10 +1,11 @@
 import { Injectable } from "@nestjs/common";
 import { ExceptionsHandler } from "@nestjs/core/exceptions/exceptions-handler";
 import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
+import mongoose, { Model } from "mongoose";
 import { ATTRIBUTE_MODEL, AttributeDocument } from "src/Schema/attribute";
 import { CrudService } from "src/base/crud.service";
 import { CreateAttributeDTO } from "./dto/create-attribute.dto";
+import { ObjectId } from "mongodb";
 
 @Injectable()
 export class AttributeService extends CrudService {
@@ -16,11 +17,15 @@ export class AttributeService extends CrudService {
   }
 
   async createAttribute(
+    id: mongoose.Types.ObjectId,
     createAttributeDTO: CreateAttributeDTO
   ): Promise<{ message: string }> {
     const { name } = createAttributeDTO;
     try {
-      const result = await this.attributeModel.create({ name: name });
+      const result = await this.attributeModel.create({
+        name: name,
+        createBy: id,
+      });
       return {
         message: "Attribute Create Sucessfully!",
       };
@@ -30,9 +35,11 @@ export class AttributeService extends CrudService {
     }
   }
 
-  async getAllAttribute(): Promise<{ result: any }> {
+  async getAllAttribute(id: mongoose.Types.ObjectId): Promise<{ result: any }> {
     try {
-      const result = await this.attributeModel.find();
+      const result = await this.attributeModel.find({
+        createBy: new ObjectId(id),
+      });
 
       return {
         result: result,
@@ -61,12 +68,12 @@ export class AttributeService extends CrudService {
     value: any
   ): Promise<{ message: string }> {
     try {
-      console.log(value)
+      console.log(value);
       const result = await this.attributeModel.findByIdAndUpdate(
         { _id: id },
         { $set: { name: value.name } }
       );
-      console.log(result)
+      console.log(result);
 
       return {
         message: "Attribute Updated Sucessfullly!",

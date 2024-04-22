@@ -6,7 +6,7 @@ export class CreateProductDTO {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  category: string;
+  categoryId: string;
 
   @ApiProperty()
   @IsNotEmpty()
