@@ -157,7 +157,7 @@ export class MerchantService extends CrudService {
       return {
         statusCode: 1,
         status: "ACCOUNT_LOGIN_SUCCESSFULLY",
-        access_token,
+        access_token: access_token,
         id: merchant?.id,
         message: SIGNIN,
       };

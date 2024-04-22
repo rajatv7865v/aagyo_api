@@ -26,7 +26,7 @@ export class Product {
   varients: any[];
 
   @Prop({ type: Object, required: true })
-  storeImage: Object;
+  productImage: Object;
 }
 
 export type ProductDocument = Product & Document;

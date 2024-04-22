@@ -5,10 +5,6 @@ import { ObjectId } from "mongodb";
 export class CreateProductDTO {
   @ApiProperty()
   @IsNotEmpty()
-  id: ObjectId;
-
-  @ApiProperty()
-  @IsNotEmpty()
   @IsString()
   category: string;
 
@@ -41,4 +37,7 @@ export class CreateProductDTO {
   @IsNotEmpty()
   @IsArray()
   varients: any[];
+
+  @ApiProperty({ type: "string", format: "binary" })
+  productImage: File;
 }

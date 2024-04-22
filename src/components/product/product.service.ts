@@ -18,30 +18,23 @@ export class ProductService extends CrudService {
   }
 
   async addProduct(
+    sub: ObjectId,
     createProductDTO: CreateProductDTO,
-    file: Express.Multer.File
+    productImage: Express.Multer.File
   ): Promise<any> {
     try {
-      const {
-        id,
-        category,
-        description,
-        keywords,
-        productName,
-        tags,
-        varients,
-      } = createProductDTO;
-
-      const uploadFile = await this.s3Service.uploadFile(file);
+      const { category, description, keywords, productName, tags, varients } =
+        createProductDTO;
+      const uploadFile = await this.s3Service.uploadFile(productImage);
       const result = await this.productModel.create({
-        productOwner: new ObjectId(id),
+        productOwner: new ObjectId(sub),
         productName,
         category,
         description,
         keywords,
         tags,
         varients,
-        storeImage: uploadFile,
+        productImage: uploadFile,
       });
       return {
         message: "Add Product Sucessfully!",
