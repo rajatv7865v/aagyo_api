@@ -254,23 +254,26 @@ export class MerchantService extends CrudService {
           $unwind: "$storeDetail",
         },
         {
-          $project: {
-            banner: "$storeDetail.banner",
-            ownerDetail: {
-              name: "$name",
-              email: "$email",
-              phone: "$contact",
-            },
-            managerDetail: {
-              name: "$name",
-              email: "$email",
-              phone: "$contact",
-            },
-            outletContact: {
-              primaryNumber: "$contact",
-              secondaryNumber: "$contact",
-            },
+          $lookup: {
+            from: "documents",
+            localField: "_id",
+            foreignField: "merchant_id",
+            as: "documentDetail",
           },
+        },
+        {
+          $unwind: "$documentDetail",
+        },
+        {
+          $lookup: {
+            from: "bankdetails",
+            localField: "_id",
+            foreignField: "merchant_id",
+            as: "bankDetail",
+          },
+        },
+        {
+          $unwind: "$bankDetail",
         },
       ];
       const result = await this.merchantModel.aggregate(aggregatePipeline);
