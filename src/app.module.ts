@@ -19,6 +19,7 @@ import { CategoryModule } from "./components/category/category.module";
 import { ProductModule } from "./components/product/product.module";
 import { MailModule } from "./components/mail/mail.module";
 import { JwtModule, JwtService } from "@nestjs/jwt";
+import { OrdersModule } from "./components/orders/orders.module";
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { JwtModule, JwtService } from "@nestjs/jwt";
     CategoryModule,
     ProductModule,
     MailModule,
+    OrdersModule
   ],
   controllers: [AppController],
   providers: [AppService],
