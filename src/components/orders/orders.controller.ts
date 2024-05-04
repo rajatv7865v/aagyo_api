@@ -8,10 +8,11 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { OrdersService } from "./orders.service";
-import { ApiOperation } from "@nestjs/swagger";
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { AuthGuard } from "src/guards/auth.guards";
 
 @UseGuards(AuthGuard)
+@ApiTags("Orders")
 @Controller("orders")
 export class OrdersController {
   constructor(readonly ordersService: OrdersService) {}
@@ -36,7 +37,7 @@ export class OrdersController {
   }
 
   @Get("/topRatedOrders")
-  @ApiOperation({ summary: "Get Analytics Report of Rejected Order" })
+  @ApiOperation({ summary: "Get Analytics Report of Top  Orders" })
   @HttpCode(HttpStatus.OK)
   getTopRatedOrders(@Req() { sub }: any) {
     return this.ordersService.getTopRatedOrders(sub);

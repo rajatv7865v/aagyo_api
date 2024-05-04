@@ -14,7 +14,7 @@ import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { CreateProductDTO } from "./dto/create-product.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
 
-@ApiTags("Prodcts")
+@ApiTags("Products")
 @Controller("product")
 export class ProductController {
   constructor(private readonly productService: ProductService) {}

@@ -14,6 +14,7 @@ import { STORE_MODEL, StoreSchema } from "./store";
 import { DOCUMENTDETAIL_MODEL, DocumentDetailSchema } from "./documents";
 import { PRODUCTMODEL, ProductSchema } from "./product";
 import { CATEGORY_MODEL, CategorySchema } from "./category";
+import { ORDERMODEL, OrderSchema } from "./order";
 
 const MODELS = [
   { name: ADMIN_MODEL, schema: AdminSchema },
@@ -30,6 +31,7 @@ const MODELS = [
   { name: DOCUMENTDETAIL_MODEL, schema: DocumentDetailSchema },
   { name: PRODUCTMODEL, schema: ProductSchema },
   { name: CATEGORY_MODEL, schema: CategorySchema },
+  { name: ORDERMODEL, schema: OrderSchema },
 ];
 
 @Global()
