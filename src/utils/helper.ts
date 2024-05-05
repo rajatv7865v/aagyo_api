@@ -19,3 +19,9 @@ export function validateOTP(otp: any, userToken: any) {
   const token = createToken(otp);
   return token === userToken;
 }
+
+export function generateOrderID() {
+  const timestamp = new Date().getTime();
+  const uniqueIdentifier = Math.floor(Math.random() * 10000); // Generate a random 4-digit number
+  return `${timestamp}${uniqueIdentifier}`;
+}

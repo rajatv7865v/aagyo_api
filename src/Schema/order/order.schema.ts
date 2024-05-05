@@ -22,7 +22,16 @@ enum PAYMENTTYPE {
 @Schema({ timestamps: true })
 export class Order {
   @Prop({ required: true })
-  product: ObjectId;
+  orderId: String;
+
+  @Prop()
+  instructions: String;
+
+  @Prop({ default: "20 mins" })
+  preprationTime: String;
+
+  @Prop({ required: true })
+  products: [ObjectId];
 
   @Prop({ required: true })
   user: ObjectId;
@@ -31,7 +40,7 @@ export class Order {
   address: ObjectId;
 
   @Prop({ required: true, default: 0 })
-  finalPrice: number;
+  totalAmount: number;
 
   @Prop({ required: true, default: 0 })
   paymentType: PAYMENTTYPE;

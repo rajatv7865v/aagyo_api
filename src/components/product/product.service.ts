@@ -44,4 +44,12 @@ export class ProductService extends CrudService {
       throw err;
     }
   }
+
+  async getAllProcucts(sub: ObjectId): Promise<any> {
+    try {
+     
+    } catch (err) {
+      throw err;
+    }
+  }
 }

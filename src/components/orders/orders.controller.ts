@@ -1,15 +1,18 @@
 import {
+  Body,
   Controller,
   Get,
   HttpCode,
   HttpStatus,
+  Patch,
   Post,
   Req,
   UseGuards,
 } from "@nestjs/common";
 import { OrdersService } from "./orders.service";
-import { ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { AuthGuard } from "src/guards/auth.guards";
+import { UpdateOrderStatusDTO } from "./dto/update-status.dto";
 
 @UseGuards(AuthGuard)
 @ApiTags("Orders")
@@ -41,5 +44,23 @@ export class OrdersController {
   @HttpCode(HttpStatus.OK)
   getTopRatedOrders(@Req() { sub }: any) {
     return this.ordersService.getTopRatedOrders(sub);
+  }
+
+  @Get("/currentOrders")
+  @ApiOperation({ summary: "Get Current Orders by user" })
+  @HttpCode(HttpStatus.OK)
+  getCurrentOrders(@Req() { sub }: any) {
+    return this.ordersService.getCurrentOrders(sub);
+  }
+
+  @Post("/updateStatus")
+  @ApiOperation({ summary: "Update Order Status" })
+  @ApiBody({ type: UpdateOrderStatusDTO })
+  @HttpCode(HttpStatus.OK)
+  updateStatus(
+    @Req() { sub }: any,
+    @Body() updateOrderStatusDTO: UpdateOrderStatusDTO
+  ) {
+    return this.ordersService.updateStatus(sub, updateOrderStatusDTO);
   }
 }

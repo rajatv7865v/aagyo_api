@@ -4,6 +4,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model, ObjectId } from "mongoose";
 import { ORDERMODEL, OrderDocument } from "src/Schema/order";
 import { CrudService } from "src/base/crud.service";
+import { UpdateOrderStatusDTO } from "./dto/update-status.dto";
 
 @Injectable()
 export class OrdersService extends CrudService {
@@ -104,6 +105,61 @@ export class OrdersService extends CrudService {
         message: "Report Generate Successfully!",
         status: "SUCCESS",
         data: data,
+      };
+    } catch (error) {
+      throw new ExceptionsHandler(error);
+    }
+  }
+
+  async getCurrentOrders(id: ObjectId): Promise<any> {
+    try {
+      const data = [
+        {
+          orderId: "20240001",
+          dateAndTime: new Date(),
+          user: "Suraj Yadav",
+          totalOrderOfUser: 10,
+          products: [],
+          totalAmount: 3000,
+          instruction: "More Spicy!",
+          paymentStatus: "COD",
+          orderStatus: "DUE",
+          orderStatusCode: 0,
+        },
+      ];
+      return {
+        message: "Current Orders!",
+        status: "SUCCESS",
+        data: data,
+      };
+    } catch (error) {
+      throw new ExceptionsHandler(error);
+    }
+  }
+
+  async updateStatus(
+    id: ObjectId,
+    updateOrderStatusDTO: UpdateOrderStatusDTO
+  ): Promise<any> {
+    try {
+      const data = [
+        {
+          orderId: "20240001",
+          dateAndTime: new Date(),
+          user: "Suraj Yadav",
+          totalOrderOfUser: 10,
+          products: [],
+          totalAmount: 3000,
+          instruction: "More Spicy!",
+          paymentStatus: "COD",
+          orderStatus: "DUE",
+          orderStatusCode: 0,
+        },
+      ];
+      return {
+        message: "Status Update Successfully!",
+        status: "SUCCESS",
+        // data: data,
       };
     } catch (error) {
       throw new ExceptionsHandler(error);

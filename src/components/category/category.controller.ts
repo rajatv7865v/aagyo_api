@@ -33,8 +33,8 @@ export class CategoryController {
     @Req() { user }: any,
     @Body() createCategoryDTO: CreateCategoryDTO,
     @UploadedFile() // new ParseFilePipe({
-    //   validators: [
-    file //     new MaxFileSizeValidator({ maxSize: 10000000 }),
+    //     new MaxFileSizeValidator({ maxSize: 10000000 }),
+    file //   validators: [
     //     new FileTypeValidator({
     //       fileType: /(image\/jpeg|image\/png|application\/pdf)/,
     //     }),
@@ -51,13 +51,13 @@ export class CategoryController {
     return this.categoryService.getAllCategory();
   }
   @UseGuards(AuthGuard)
-  @Public()
   @ApiOperation({ summary: "Get All Category with status and banner" })
   @Get("getAllWithStatus")
   @HttpCode(HttpStatus.OK)
   getAllCategoryWithStatus(@Req() { user }: any) {
     return this.categoryService.getAllCategoryWithStatus(user);
   }
+
   @UseGuards(AuthGuard)
   @ApiOperation({ summary: "Update Category Status" })
   @ApiParam({ name: "id", description: "Category Id" })
