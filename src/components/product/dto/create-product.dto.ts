@@ -1,6 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsArray, IsNotEmpty, IsString } from "class-validator";
-import { ObjectId } from "mongodb";
 
 export class CreateProductDTO {
   @ApiProperty()
@@ -21,7 +20,8 @@ export class CreateProductDTO {
   @ApiProperty()
   @IsNotEmpty()
   @IsArray()
-  tags: string[];
+  @IsString()
+  tags: String[];
 
   @ApiProperty()
   @IsNotEmpty()
