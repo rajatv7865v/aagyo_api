@@ -30,12 +30,12 @@ export class S3Service {
   }
 
   async uploadFile(file: Express.Multer.File) {
-    const key = `${file.fieldname}${Date.now()}`;
+    const key = `${file?.fieldname}${Date.now()}`;
     const input: PutObjectCommandInput = {
-      Body: file.buffer,
-      Bucket: this.bucket,
+      Body: file?.buffer,
+      Bucket: this?.bucket,
       Key: key,
-      ContentType: file.mimetype,
+      ContentType: file?.mimetype,
       ACL: "public-read",
     };
     try {

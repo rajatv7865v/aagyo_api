@@ -3,7 +3,7 @@ import mongoose, { Date, Document } from "mongoose";
 
 @Schema({ timestamps: true, strict: true })
 export class Category {
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true })
   name: string;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "Merchant" })
