@@ -1,19 +1,19 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNumber, IsOptional, IsString } from "class-validator";
+import { IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class GetProductDTO {
-  @ApiProperty()
+  @ApiProperty({ required: false, type: String })
   @IsString()
   @IsOptional()
   readonly search?: string = "";
 
-  @ApiProperty()
+  @ApiProperty({ required: false, type: String })
   @IsOptional()
-  @IsNumber()
-  readonly limit?: number = 10;
+  @IsString()
+  readonly limit?: string = "10";
 
-  @ApiProperty()
+  @ApiProperty({ required: false, type: String })
   @IsOptional()
-  @IsNumber()
-  readonly page?: number = 1;
+  @IsString()
+  readonly page?: string = "1";
 }

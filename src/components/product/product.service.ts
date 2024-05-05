@@ -6,6 +6,7 @@ import { CrudService } from "src/base/crud.service";
 import { CreateProductDTO } from "./dto/create-product.dto";
 import { ObjectId } from "mongodb";
 import { S3Service } from "../s3/s3.service";
+import { GetProductDTO } from "./dto/get-product.dto";
 
 @Injectable()
 export class ProductService extends CrudService {
@@ -45,9 +46,53 @@ export class ProductService extends CrudService {
     }
   }
 
-  async getAllProcucts(sub: ObjectId): Promise<any> {
+  async getAllProcucts(
+    sub: ObjectId,
+    getProductDTO: GetProductDTO
+  ): Promise<any> {
     try {
-     
+      const { limit, page, search } = getProductDTO;
+
+      const aggregationPipeline: any = [
+        {
+          $match: {
+            productName: {
+              $regex: `${search || ""}`,
+              $options: "i",
+            },
+          },
+        },
+        {
+          $sort: {
+            createdAt: -1,
+          },
+        },
+        {
+          $facet: {
+            metadata: [
+              { $count: "total" },
+              {
+                $addFields: {
+                  page: +page,
+                  maxPage: {
+                    $ceil: {
+                      $divide: ["$total", +limit],
+                    },
+                  },
+                },
+              },
+            ],
+            data: [{ $skip: (+page - 1) * +limit }, { $limit: +limit }],
+          },
+        },
+      ];
+
+      const result = await this.productModel.aggregate(aggregationPipeline);
+      return {
+        message: "Product List!",
+        status: "SUCCESS",
+        data: result,
+      };
     } catch (err) {
       throw err;
     }

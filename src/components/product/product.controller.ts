@@ -5,6 +5,7 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  Query,
   Req,
   UploadedFile,
   UploadedFiles,
@@ -24,7 +25,7 @@ import { FileInterceptor } from "@nestjs/platform-express";
 import { GetProductDTO } from "./dto/get-product.dto";
 import { AuthGuard } from "src/guards/auth.guards";
 
-@UseGuards(AuthGuard)
+// @UseGuards(AuthGuard)
 @ApiTags("Products")
 @Controller("product")
 export class ProductController {
@@ -49,10 +50,9 @@ export class ProductController {
   }
 
   @ApiOperation({ summary: "Get All Products" })
-  @ApiQuery({ type: GetProductDTO })
   @Get("")
   @HttpCode(HttpStatus.OK)
-  getAllProcucts(@Req() { sub }: any) {
-    return this.productService.getAllProcucts(sub);
+  getAllProcucts(@Req() { sub }: any, @Query() getProductDTO: GetProductDTO) {
+    return this.productService.getAllProcucts(sub, getProductDTO);
   }
 }
