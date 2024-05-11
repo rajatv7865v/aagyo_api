@@ -5,36 +5,40 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  ParseIntPipe,
   Patch,
   Post,
   Query,
-  UsePipes,
-  ValidationPipe,
+  UseGuards,
 } from "@nestjs/common";
 import { MerchantService } from "./merchant.service";
 import { CreateMerchantDTO } from "./dto/createMerchant.dto";
 import { MerchantSortFilterDTO } from "./dto/merchantSortFilterDTO";
 import { ApiBody, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
 import { StoreStatus } from "./dto/store-Status.dto";
+import { AuthGuard } from "src/guards/auth.guards";
+import { Public } from "src/decorators/public.decorator";
 
+@UseGuards(AuthGuard)
 @ApiTags("Merchant")
 @Controller("/merchant")
 export class MerchantController {
   constructor(private readonly merchantService: MerchantService) {}
 
+  @Public()
   @Get("/")
   @HttpCode(HttpStatus.OK)
   getAllMerchants(@Query() merchantSortFilterDTO: MerchantSortFilterDTO) {
     return this.merchantService.getAllMerchants(merchantSortFilterDTO);
   }
 
+  @Public()
   @Get("/get/:id")
   @HttpCode(HttpStatus.OK)
   getMerchantById(@Param("id") id: string) {
     return this.merchantService.getMerchantById(id);
   }
 
+  @Public()
   @Post("/create")
   @ApiOperation({ summary: "Register Merchant" })
   @ApiBody({
@@ -45,6 +49,7 @@ export class MerchantController {
     return this.merchantService.createMerchant(createMerchantDTO);
   }
 
+  @Public()
   @Patch("/update/:id")
   @ApiOperation({ summary: "Update Merchant Details using id" })
   @HttpCode(HttpStatus.CREATED)
@@ -55,12 +60,14 @@ export class MerchantController {
     return this.merchantService.updateMerchant(id, createMerchantDTO);
   }
 
+  @Public()
   @Get("/getAllStoresName")
   @HttpCode(HttpStatus.OK)
   getAllStoresName() {
     return this.merchantService.getAllStoresName();
   }
 
+  @Public()
   @Patch("/storeStatus/:merchantId")
   @ApiOperation({ summary: "Update Store is open or Close" })
   @ApiParam({

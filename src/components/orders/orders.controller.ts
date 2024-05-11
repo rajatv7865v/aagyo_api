@@ -6,13 +6,16 @@ import {
   HttpStatus,
   Patch,
   Post,
+  Query,
   Req,
   UseGuards,
 } from "@nestjs/common";
 import { OrdersService } from "./orders.service";
-import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { AuthGuard } from "src/guards/auth.guards";
 import { UpdateOrderStatusDTO } from "./dto/update-status.dto";
+import { OrderHistoryDTO } from "./dto/order-history.dto";
+import { Public } from "src/decorators/public.decorator";
 
 @UseGuards(AuthGuard)
 @ApiTags("Orders")
@@ -62,5 +65,13 @@ export class OrdersController {
     @Body() updateOrderStatusDTO: UpdateOrderStatusDTO
   ) {
     return this.ordersService.updateStatus(sub, updateOrderStatusDTO);
+  }
+
+  @ApiBearerAuth()
+  @Get("/orderHistory")
+  @ApiOperation({ summary: "Order History with Pagination nad filter" })
+  @HttpCode(HttpStatus.OK)
+  orderHistory(@Req() { sub }: any, @Query() orderHistoryDTO: OrderHistoryDTO) {
+    return this.ordersService.orderHistory(sub, orderHistoryDTO);
   }
 }

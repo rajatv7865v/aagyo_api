@@ -14,6 +14,9 @@ export class Merchant {
 
   @Prop({ type: String })
   password: string;
+
+  @Prop({ type: Number })
+  rating: number = 4;
 }
 
 export type MerchantDocument = Merchant & Document;

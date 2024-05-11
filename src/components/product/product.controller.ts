@@ -8,24 +8,17 @@ import {
   Query,
   Req,
   UploadedFile,
-  UploadedFiles,
   UseGuards,
   UseInterceptors,
 } from "@nestjs/common";
 import { ProductService } from "./product.service";
-import {
-  ApiBody,
-  ApiConsumes,
-  ApiOperation,
-  ApiQuery,
-  ApiTags,
-} from "@nestjs/swagger";
+import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { CreateProductDTO } from "./dto/create-product.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { GetProductDTO } from "./dto/get-product.dto";
 import { AuthGuard } from "src/guards/auth.guards";
 
-// @UseGuards(AuthGuard)
+@UseGuards(AuthGuard)
 @ApiTags("Products")
 @Controller("product")
 export class ProductController {

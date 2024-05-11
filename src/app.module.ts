@@ -19,6 +19,7 @@ import { CategoryModule } from "./components/category/category.module";
 import { ProductModule } from "./components/product/product.module";
 import { MailModule } from "./components/mail/mail.module";
 import { OrdersModule } from "./components/orders/orders.module";
+import { WalletModule } from "./components/wallet/wallet.module";
 
 @Module({
   imports: [
@@ -44,7 +45,8 @@ import { OrdersModule } from "./components/orders/orders.module";
     CategoryModule,
     ProductModule,
     MailModule,
-    OrdersModule
+    OrdersModule,
+    WalletModule
   ],
   controllers: [AppController],
   providers: [AppService],

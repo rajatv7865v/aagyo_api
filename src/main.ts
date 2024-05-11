@@ -13,13 +13,10 @@ async function bootstrap() {
 
   //IMPLEMENT SWAGGER
   const config = new DocumentBuilder()
-    .addSecurity("basic", {
-      type: "http",
-      scheme: "basic",
-    })
     .setTitle("Aagyo APIs")
     .setDescription("This is for test of Aagyo APIs")
     .setVersion("1.0.0")
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

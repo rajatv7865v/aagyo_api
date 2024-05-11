@@ -5,6 +5,8 @@ import { Model, ObjectId } from "mongoose";
 import { ORDERMODEL, OrderDocument } from "src/Schema/order";
 import { CrudService } from "src/base/crud.service";
 import { UpdateOrderStatusDTO } from "./dto/update-status.dto";
+import { OrderHistoryDTO } from "./dto/order-history.dto";
+import { CustomHttpException } from "src/exception/custom-http.exception";
 
 @Injectable()
 export class OrdersService extends CrudService {
@@ -163,6 +165,76 @@ export class OrdersService extends CrudService {
       };
     } catch (error) {
       throw new ExceptionsHandler(error);
+    }
+  }
+
+  async orderHistory(
+    id: ObjectId,
+    orderHistoryDto: OrderHistoryDTO
+  ): Promise<any> {
+    try {
+      const { day, limit, orderStatus, orderType, page, search } =
+        orderHistoryDto;
+      const data = {
+        metadata: [
+          {
+            total: 5,
+            page: page,
+            maxPage: 1,
+          },
+        ],
+        data: [
+          {
+            status: orderStatus,
+            rating: 3.0,
+            dateAndTime: new Date(),
+            totalOrderByUser: 16,
+            orders: [
+              {
+                productName: "Masala Dosa",
+                quantity: 2,
+              },
+              {
+                productName: "Paneer Pakoda",
+                quantity: 1,
+              },
+              {
+                productName: "Cold Drink",
+                quantity: 1,
+              },
+            ],
+            totalPrice: 589.0,
+          },
+          {
+            status: orderStatus,
+            rating: 5.0,
+            dateAndTime: new Date(),
+            totalOrderByUser: 16,
+            orders: [
+              {
+                productName: "Masala Dosa",
+                quantity: 2,
+              },
+              {
+                productName: "Paneer Pakoda",
+                quantity: 1,
+              },
+              {
+                productName: "Cold Drink",
+                quantity: 1,
+              },
+            ],
+            totalPrice: 256.0,
+          },
+        ],
+      };
+      return {
+        message: "Order History",
+        status: "SUCCESS",
+        data: data,
+      };
+    } catch (error) {
+      throw new CustomHttpException(error);
     }
   }
 }

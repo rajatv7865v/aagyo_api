@@ -254,6 +254,13 @@ export class MerchantService extends CrudService {
           $unwind: "$storeDetail",
         },
         {
+          $project: {
+            createdAt: 0,
+            updatedAt: 0,
+            __v: 0,
+          },
+        },
+        {
           $lookup: {
             from: "documents",
             localField: "_id",
@@ -265,6 +272,13 @@ export class MerchantService extends CrudService {
           $unwind: "$documentDetail",
         },
         {
+          $project: {
+            createdAt: 0,
+            updatedAt: 0,
+            __v: 0,
+          },
+        },
+        {
           $lookup: {
             from: "bankdetails",
             localField: "_id",
@@ -274,6 +288,13 @@ export class MerchantService extends CrudService {
         },
         {
           $unwind: "$bankDetail",
+        },
+        {
+          $project: {
+            createdAt: 0,
+            updatedAt: 0,
+            __v: 0,
+          },
         },
       ];
       const result = await this.merchantModel.aggregate(aggregatePipeline);

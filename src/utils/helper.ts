@@ -20,8 +20,8 @@ export function validateOTP(otp: any, userToken: any) {
   return token === userToken;
 }
 
-export function generateOrderID() {
+export function generateUniqueNumber() {
   const timestamp = new Date().getTime();
-  const uniqueIdentifier = Math.floor(Math.random() * 10000); // Generate a random 4-digit number
+  const uniqueIdentifier = Math.floor(Math.random() * 100000);
   return `${timestamp}${uniqueIdentifier}`;
 }
