@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   HttpCode,
+  HttpException,
   HttpStatus,
   Post,
   Query,
@@ -39,6 +40,12 @@ export class ProductController {
     @UploadedFile()
     productImage: Express.Multer.File
   ) {
+    if (!productImage) {
+      throw new HttpException(
+        "Product image is required",
+        HttpStatus.BAD_REQUEST
+      );
+    }
     return this.productService.addProduct(sub, createProductDTO, productImage);
   }
 

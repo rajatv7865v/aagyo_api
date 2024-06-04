@@ -19,14 +19,15 @@ export class AttributeService extends CrudService {
   async createAttribute(
     id: mongoose.Types.ObjectId,
     createAttributeDTO: CreateAttributeDTO
-  ): Promise<{ message: string }> {
+  ): Promise<{ message: string; status: string }> {
     const { name } = createAttributeDTO;
     try {
       const result = await this.attributeModel.create({
         name: name,
-        createBy: id,
+        createdBy: new ObjectId(id),
       });
       return {
+        status: "SUCCESS",
         message: "Attribute Create Sucessfully!",
       };
     } catch (err) {
@@ -37,8 +38,9 @@ export class AttributeService extends CrudService {
 
   async getAllAttribute(id: mongoose.Types.ObjectId): Promise<{ result: any }> {
     try {
+      console.log("id", id);
       const result = await this.attributeModel.find({
-        createBy: new ObjectId(id),
+        createdBy: new ObjectId(id),
       });
 
       return {

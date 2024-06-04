@@ -7,7 +7,7 @@ export class Attribute {
   name: string;
 
   @Prop({ required: true, ref: "merchants" })
-  createBy: mongoose.Types.ObjectId;
+  createdBy: mongoose.Types.ObjectId;
 }
 
 export type AttributeDocument = Attribute & Document;

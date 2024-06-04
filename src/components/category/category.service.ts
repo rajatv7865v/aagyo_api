@@ -7,6 +7,7 @@ import { CATEGORY_MODEL, CategoryDocument } from "src/Schema/category";
 import { CreateCategoryDTO } from "./dto/create-category.dto";
 import { S3Service } from "../s3/s3.service";
 import { CategoryStatusDTO } from "./dto/update-status.dto";
+import { ObjectId } from "mongodb";
 
 @Injectable()
 export class CategoryService extends CrudService {
@@ -77,7 +78,7 @@ export class CategoryService extends CrudService {
       const aggregatePipeline: any = [
         {
           $match: {
-            createdBy: new mongo.ObjectId(sub),
+            createdBy: new ObjectId(sub),
           },
         },
         {
@@ -85,6 +86,7 @@ export class CategoryService extends CrudService {
             banner: 1,
             name: 1,
             status: 1,
+            createdBy: 1,
           },
         },
       ];
@@ -114,6 +116,20 @@ export class CategoryService extends CrudService {
       return {
         status: "SUCCESS",
         message: "Category Status Updated Successfully",
+      };
+    } catch (error) {
+      throw new ExceptionsHandler(error);
+    }
+  }
+
+  async deleteCategoryById(id: ObjectId) {
+    try {
+      const result = await this.categoryModel.findByIdAndDelete(
+        new ObjectId(id)
+      );
+      return {
+        status: "SUCCESS",
+        message: "Category deleted Successfully!",
       };
     } catch (error) {
       throw new ExceptionsHandler(error);

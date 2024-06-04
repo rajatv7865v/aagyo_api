@@ -27,23 +27,46 @@ export class MerchantService extends CrudService {
   }
   async getAllMerchants(
     merchantSortFilterDTO: MerchantSortFilterDTO
-  ): Promise<{ result: any }> {
+  ): Promise<any> {
     try {
       const { limit, page, search, zone, city } = merchantSortFilterDTO;
-
+      console.log(limit);
+      console.log(page);
+      console.log(search);
+      console.log(zone);
+      console.log(city);
       const aggregationPipeline: any = [
         {
+          $lookup: {
+            from: "stores",
+            localField: "_id",
+            foreignField: "merchant_id",
+            as: "storeDetail",
+          },
+        },
+        {
+          $unwind: "$storeDetail",
+        },
+        {
+          $project: {
+            email: 1,
+            contact: 1,
+            createdAt: 1,
+            storeName: "$storeDetail.storeName",
+            country: "$storeDetail.country",
+            state: "$storeDetail.state",
+            city: "$storeDetail.city",
+            isOpen: "$storeDetail.isOpen",
+          },
+        },
+        {
           $match: {
-            "storeDetails.fullName": {
-              $regex: `${search}`,
+            storeName: {
+              $regex: `${search || ""}`,
               $options: "i",
             },
-            "storeDetails.operatingZone": {
-              $regex: `${zone}`,
-              $options: "i",
-            },
-            "storeDetails.city": {
-              $regex: `${city}`,
+            city: {
+              $regex: `${city || ""}`,
               $options: "i",
             },
           },
@@ -51,23 +74,6 @@ export class MerchantService extends CrudService {
         {
           $sort: {
             createdAt: -1,
-          },
-        },
-        {
-          $project: {
-            _id: 1,
-            createdAt: 1,
-            storeDetails: 1,
-          },
-        },
-        {
-          $replaceRoot: {
-            newRoot: {
-              $mergeObjects: [
-                { _id: "$_id", createdAt: "$createdAt" },
-                "$storeDetails",
-              ],
-            },
           },
         },
         {
@@ -89,13 +95,15 @@ export class MerchantService extends CrudService {
           },
         },
       ];
-
       const result = await this.merchantModel.aggregate(aggregationPipeline);
       return {
-        result,
+        data: result,
+        message: "Merchants List",
+        status: "SUCCESS",
       };
     } catch (err) {
-      throw new ExceptionsHandler(err);
+      console.log(err);
+      throw new ExceptionsHandler();
     }
   }
 
@@ -145,29 +153,26 @@ export class MerchantService extends CrudService {
     } catch (err) {}
   }
 
-  async getAllStoresName(): Promise<{ result: any }> {
+  async getAllStoresName(): Promise<{ data: any; message: any }> {
     try {
       const aggregationPipeline: any = [
         {
           $match: {},
         },
         {
-          $addFields: {
-            storeName: "$storeDetails.storeName",
-          },
-        },
-        {
           $project: {
             _id: 1,
+            merchant_id: 1,
             storeName: 1,
           },
         },
       ];
 
-      const result = await this.merchantModel.aggregate(aggregationPipeline);
+      const result = await this.storeModel.aggregate(aggregationPipeline);
 
       return {
-        result,
+        data: result,
+        message: "All Stores Name",
       };
     } catch (err) {
       throw new ExceptionsHandler(err);

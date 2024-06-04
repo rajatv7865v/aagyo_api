@@ -41,13 +41,11 @@ class storeDetails {
 
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
   readonly storeName: string;
 
   @ApiProperty()
   @IsString()
   @IsEmail()
-  @IsNotEmpty()
   readonly contactEmail: string;
 
   @ApiProperty()
@@ -57,52 +55,42 @@ class storeDetails {
 
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
   readonly contactPerson: string;
 
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
   readonly address: string;
 
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
   readonly loyality: string;
 
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
   readonly country: string;
 
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
   readonly state: string;
 
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
   readonly city: string;
 
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
   readonly timeZone: string;
 
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
   readonly zipCode: string;
 
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
   readonly operatingZone: string;
 
   @ApiProperty()
   @IsNumber()
-  @IsNotEmpty()
   readonly prepareTime: number;
 
   @ApiProperty()
@@ -111,12 +99,10 @@ class storeDetails {
 
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
   readonly aboutUs: string;
 
   @ApiProperty()
   @IsObject()
-  @IsNotEmpty()
   readonly banner: Object;
 }
 
@@ -145,19 +131,16 @@ class storeTime {
 class commission {
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
   readonly payoutType: string;
 
   @ApiProperty()
   @IsNumber()
-  @IsNotEmpty()
   readonly value: 0;
 }
 
 class storeTags {
   @ApiProperty()
   @IsArray()
-  @IsNotEmpty()
   @ArrayMinSize(1, { message: "Array must have at least one element" })
   readonly tags: [];
 }
@@ -165,44 +148,40 @@ class storeTags {
 export class storeCategory {
   @ApiProperty()
   @IsArray()
-  @IsNotEmpty()
   @ArrayMinSize(1, { message: "Array must have at least one element" })
   readonly category: [];
 }
 
 export class CreateMerchantDTO {
-  @ApiProperty()
-  @ValidateNested()
-  @IsDefined()
-  @IsNotEmpty()
-  // @ValidationTypes(() => storeDetails)
-  storeDetails?: storeDetails;
+  // @ApiProperty()
+  // @ValidateNested()
+  // @IsDefined()
+  // // @ValidationTypes(() => storeDetails)
+  // storeDetails?: storeDetails;
 
-  @ApiProperty()
-  @IsObject()
-  @IsDefined()
-  @ValidateNested()
-  @IsNotEmpty()
-  @ValidationTypes(() => storeTime)
-  storeTime?: storeTime;
+  // @ApiProperty()
+  // @IsObject()
+  // @IsDefined()
+  // @ValidateNested()
+  // @ValidationTypes(() => storeTime)
+  // storeTime?: storeTime;
 
-  @ApiProperty()
-  @IsObject()
-  @IsDefined()
-  @ValidateNested()
-  @ValidationTypes(() => commission)
-  commission: commission;
+  // @ApiProperty()
+  // @IsObject()
+  // @IsDefined()
+  // @ValidateNested()
+  // @ValidationTypes(() => commission)
+  // commission: commission;
 
-  @ApiProperty()
-  @IsObject()
-  @IsNotEmpty()
-  @ValidateNested()
-  @ValidationTypes(() => storeTags)
-  storeTags: storeTags;
+  // @ApiProperty()
+  // @IsObject()
+  // @ValidateNested()
+  // @ValidationTypes(() => storeTags)
+  // storeTags: storeTags;
 
-  @ApiProperty()
-  @IsObject()
-  @ValidateNested()
-  @ValidationTypes(() => storeCategory)
-  storeCategory: storeCategory;
+  // @ApiProperty()
+  // @IsObject()
+  // @ValidateNested()
+  // @ValidationTypes(() => storeCategory)
+  // storeCategory: storeCategory;
 }

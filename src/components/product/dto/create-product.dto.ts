@@ -1,11 +1,25 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsArray, IsNotEmpty, IsString } from "class-validator";
+import { Transform } from "class-transformer";
+import {
+  IsArray,
+  IsBoolean,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from "class-validator";
+import { ObjectId } from "mongodb";
 
 export class CreateProductDTO {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  categoryId: string;
+  categoryId: ObjectId;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  unitId: ObjectId;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -18,25 +32,61 @@ export class CreateProductDTO {
   description: string;
 
   @ApiProperty()
-  @IsNotEmpty()
+  @IsOptional()
   @IsArray()
-  @IsString()
   tags: String[];
 
   @ApiProperty()
-  @IsNotEmpty()
   @IsArray()
+  @IsOptional()
   keywords: string[];
 
   @ApiProperty()
-  @IsNotEmpty()
+  @IsOptional()
   @IsArray()
   attributes: any[];
 
   @ApiProperty()
-  @IsNotEmpty()
+  @IsOptional()
   @IsArray()
   varients: any[];
+
+  @ApiProperty()
+  @IsOptional()
+  @IsNumber()
+  @Transform(({ value }) => {
+    const numberValue = Number(value);
+    return isNaN(numberValue) ? value : numberValue;
+  })
+  totalStock: number;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsNumber()
+  @Transform(({ value }) => {
+    const numberValue = Number(value);
+    return isNaN(numberValue) ? value : numberValue;
+  })
+  maxPurchaseQuantity: number;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  isOrganic: string;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  discountType: string;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsNumber()
+  @Transform(({ value }) => {
+    const numberValue = Number(value);
+    return isNaN(numberValue) ? value : numberValue;
+  })
+  discount: number;
 
   @ApiProperty({ type: "string", format: "binary" })
   productImage: File;

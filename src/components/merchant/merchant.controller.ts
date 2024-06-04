@@ -8,7 +8,9 @@ import {
   Patch,
   Post,
   Query,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from "@nestjs/common";
 import { MerchantService } from "./merchant.service";
 import { CreateMerchantDTO } from "./dto/createMerchant.dto";
@@ -17,6 +19,7 @@ import { ApiBody, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
 import { StoreStatus } from "./dto/store-Status.dto";
 import { AuthGuard } from "src/guards/auth.guards";
 import { Public } from "src/decorators/public.decorator";
+import { FileInterceptor } from "@nestjs/platform-express";
 
 @UseGuards(AuthGuard)
 @ApiTags("Merchant")
@@ -28,6 +31,7 @@ export class MerchantController {
   @Get("/")
   @HttpCode(HttpStatus.OK)
   getAllMerchants(@Query() merchantSortFilterDTO: MerchantSortFilterDTO) {
+    console.log("hit");
     return this.merchantService.getAllMerchants(merchantSortFilterDTO);
   }
 
@@ -45,8 +49,14 @@ export class MerchantController {
     schema: {},
   })
   @HttpCode(HttpStatus.CREATED)
-  createMerchant(@Body() createMerchantDTO: CreateMerchantDTO) {
-    return this.merchantService.createMerchant(createMerchantDTO);
+  @UseInterceptors(FileInterceptor("file"))
+  createMerchant(
+    @Body() createMerchantDTO: CreateMerchantDTO,
+    @UploadedFile() file: Express.Multer.File
+  ) {
+    console.log(createMerchantDTO);
+    console.log(file);
+    // return this.merchantService.createMerchant(createMerchantDTO);
   }
 
   @Public()

@@ -67,6 +67,7 @@ export class OrdersController {
     return this.ordersService.updateStatus(sub, updateOrderStatusDTO);
   }
 
+  @Public()
   @ApiBearerAuth()
   @Get("/orderHistory")
   @ApiOperation({ summary: "Order History with Pagination nad filter" })

@@ -6,6 +6,7 @@ import { UnitModule } from "./unit.module";
 import { Model } from "mongoose";
 import { ExceptionsHandler } from "@nestjs/core/exceptions/exceptions-handler";
 import { CreateUnitDTO } from "./dto/create-unit.dto";
+import { ObjectId } from "mongodb";
 
 @Injectable()
 export class UnitService extends CrudService {
@@ -16,12 +17,16 @@ export class UnitService extends CrudService {
     super(unitModel);
   }
 
-  async createUnit(createUnitDTO: CreateUnitDTO): Promise<{ message: string }> {
+  async createUnit(
+    createUnitDTO: CreateUnitDTO,
+    id: ObjectId
+  ): Promise<{ message: string; status: string }> {
     const { name } = createUnitDTO;
     try {
-      const result = await this.unitModel.create({ name: name });
+      const result = await this.unitModel.create({ name: name, createdBy: id });
       return {
-        message: "Attribute Create Sucessfully!",
+        message: "Unit Created Sucessfully!",
+        status: "SUCCESS",
       };
     } catch (err) {
       console.log(err);
@@ -29,9 +34,9 @@ export class UnitService extends CrudService {
     }
   }
 
-  async getAllUnit(): Promise<{ result: any }> {
+  async getAllUnit(id: ObjectId): Promise<{ result: any }> {
     try {
-      const result = await this.unitModel.find();
+      const result = await this.unitModel.find({ createdBy: new ObjectId(id) });
 
       return {
         result: result,
@@ -41,12 +46,13 @@ export class UnitService extends CrudService {
       throw new ExceptionsHandler(err);
     }
   }
-  async deleteUnitById(id: string): Promise<{ result: any }> {
+  async deleteUnitById(id: string): Promise<any> {
     try {
       const result = await this.unitModel.findByIdAndDelete(id);
 
       return {
-        result: "Unit delete Sucessfully!",
+        message: "Unit delete Sucessfully!",
+        status: "SUCCESS",
       };
     } catch (err) {
       console.log(err);

@@ -11,6 +11,7 @@ import {
   UploadedFile,
   UseGuards,
   Req,
+  Delete,
 } from "@nestjs/common";
 import { CategoryService } from "./category.service";
 import { CreateCategoryDTO } from "./dto/create-category.dto";
@@ -19,6 +20,7 @@ import { ApiBody, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
 import { CategoryStatusDTO } from "./dto/update-status.dto";
 import { AuthGuard } from "src/guards/auth.guards";
 import { Public } from "src/decorators/public.decorator";
+import { ObjectId } from "mongodb";
 
 @ApiTags("Category")
 @Controller("category")
@@ -33,8 +35,8 @@ export class CategoryController {
     @Req() { user }: any,
     @Body() createCategoryDTO: CreateCategoryDTO,
     @UploadedFile() // new ParseFilePipe({
-    //   validators: [
-    file //     new MaxFileSizeValidator({ maxSize: 10000000 }),
+    //     new MaxFileSizeValidator({ maxSize: 10000000 }),
+    file //   validators: [
     //     new FileTypeValidator({
     //       fileType: /(image\/jpeg|image\/png|application\/pdf)/,
     //     }),
@@ -70,5 +72,13 @@ export class CategoryController {
     @Body() categoryStatusDTO: CategoryStatusDTO
   ) {
     return this.categoryService.updateCategoryStatus(id, categoryStatusDTO);
+  }
+
+  @UseGuards(AuthGuard)
+  @ApiOperation({ summary: "Delete  Category by ID" })
+  @Delete("delete/:id")
+  @HttpCode(HttpStatus.OK)
+  deleteCategoryById(@Param() id: ObjectId) {
+    return this.categoryService.deleteCategoryById(id);
   }
 }

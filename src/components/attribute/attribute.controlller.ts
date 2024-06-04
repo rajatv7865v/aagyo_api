@@ -24,17 +24,17 @@ export class AtrributeController {
   constructor(private readonly attributeService: AttributeService) {}
 
   @Post("create")
-  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.CREATED)
   createAttribute(
     @Body() createAttributeDTO: CreateAttributeDTO,
-    @Req() { sub }: any
+    @Req() { user: { sub } }: any
   ) {
     return this.attributeService.createAttribute(sub, createAttributeDTO);
   }
 
   @Get("getAll")
   @HttpCode(HttpStatus.OK)
-  getAllAttribute(@Req() { sub }: any) {
+  getAllAttribute(@Req() { user: { sub } }: any) {
     return this.attributeService.getAllAttribute(sub);
   }
 

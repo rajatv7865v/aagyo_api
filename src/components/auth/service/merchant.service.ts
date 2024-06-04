@@ -4,7 +4,6 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
-  NotFoundException,
 } from "@nestjs/common";
 import { CrudService } from "src/base/crud.service";
 import { InjectModel } from "@nestjs/mongoose";
