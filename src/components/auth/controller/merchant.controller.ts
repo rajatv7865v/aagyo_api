@@ -83,13 +83,9 @@ export class MerchantController {
   @HttpCode(HttpStatus.CREATED)
   registerStoreDetail(
     @Body() registerStoreDetailDTO: RegisterStoreDetailDTO,
-    @UploadedFile(
-      new ParseFilePipe({
-        validators: [new FileTypeValidator({ fileType: "image/jpeg" })],
-      })
-    ) // new ParseFilePipe({
-    //   //   new MaxFileSizeValidator({ maxSize: 100000000 }),
-    storeImage //   // validators: [
+    @UploadedFile() // new ParseFilePipe({
+    //   // validators: [
+    storeImage //   //   new MaxFileSizeValidator({ maxSize: 100000000 }),
     //   //   new FileTypeValidator({
     //   //     fileType: /(image\/jpeg|image\/png|application\/pdf)/,
     //   //   }),
