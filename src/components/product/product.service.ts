@@ -85,38 +85,49 @@ export class ProductService extends CrudService {
         },
         {
           $lookup: {
-            from: "Category",
+            from: "categories",
             localField: "categoryId",
             foreignField: "_id",
             as: "categoryDetail",
           },
         },
-        // {
-        //   $unwind: "$categoryDetail",
-        // },
-        // {
-        //   $sort: {
-        //     createdAt: -1,
-        //   },
-        // },
-        // {
-        //   $facet: {
-        //     metadata: [
-        //       { $count: "total" },
-        //       {
-        //         $addFields: {
-        //           page: +page,
-        //           maxPage: {
-        //             $ceil: {
-        //               $divide: ["$total", +limit],
-        //             },
-        //           },
-        //         },
-        //       },
-        //     ],
-        //     data: [{ $skip: (+page - 1) * +limit }, { $limit: +limit }],
-        //   },
-        // },
+        {
+          $unwind: "$categoryDetail",
+        },
+        {
+          $lookup: {
+            from: "units",
+            localField: "unitId",
+            foreignField: "_id",
+            as: "unitDetail",
+          },
+        },
+        {
+          $unwind: "$unitDetail",
+        },
+        {
+          $sort: {
+            createdAt: -1,
+          },
+        },
+        {
+          $facet: {
+            metadata: [
+              { $count: "total" },
+              {
+                $addFields: {
+                  page: +page,
+                  maxPage: {
+                    $ceil: {
+                      $divide: ["$total", +limit],
+                    },
+                  },
+                },
+              },
+            ],
+            data: [{ $skip: (+page - 1) * +limit }, { $limit: +limit }],
+          },
+        },
       ];
 
       const result = await this.productModel.aggregate(aggregationPipeline);
