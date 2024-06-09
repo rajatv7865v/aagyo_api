@@ -85,10 +85,7 @@ export class MerchantController {
     @Body() registerStoreDetailDTO: RegisterStoreDetailDTO,
     @UploadedFile(
       new ParseFilePipe({
-        validators: [
-          new MaxFileSizeValidator({ maxSize: 100000 }),
-          new FileTypeValidator({ fileType: "image/jpeg" }),
-        ],
+        validators: [new FileTypeValidator({ fileType: "image/jpeg" })],
       })
     ) // new ParseFilePipe({
     //   //   new MaxFileSizeValidator({ maxSize: 100000000 }),
@@ -151,5 +148,12 @@ export class MerchantController {
   })
   getStepById(@Param("id") id: any) {
     return this.merchantService.getStepById(id);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Get("switchStore/:id")
+  @ApiOperation({ summary: "Get current step by id" })
+  accessMerchnatByAdmin(@Param("id") id: any) {
+    return this.merchantService.accessMerchnatByAdmin(id);
   }
 }

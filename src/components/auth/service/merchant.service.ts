@@ -373,4 +373,15 @@ export class MerchantService extends CrudService {
       throw new ForbiddenException(error);
     }
   }
+
+  async accessMerchnatByAdmin(id: ObjectId) {
+    try {
+      const result = await this.merchantModel.find({
+        _id: id,
+      });
+      console.log(result);
+    } catch (error) {
+      throw new ForbiddenException(error);
+    }
+  }
 }
