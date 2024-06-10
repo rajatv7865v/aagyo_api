@@ -54,9 +54,7 @@ export class MerchantController {
     @Body() createMerchantDTO: CreateMerchantDTO,
     @UploadedFile() file: Express.Multer.File
   ) {
-    console.log(createMerchantDTO);
-    console.log(file);
-    // return this.merchantService.createMerchant(createMerchantDTO);
+    return this.merchantService.createMerchant(createMerchantDTO);
   }
 
   @Public()
